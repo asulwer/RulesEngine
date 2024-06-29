@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 //  Licensed under the MIT License.
 
-using DemoApp.EFDataExample;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RulesEngine.Models;
@@ -12,6 +11,7 @@ using System.IO;
 using System.Linq;
 using static RulesEngine.Extensions.ListofRuleResultTreeExtension;
 using Microsoft.EntityFrameworkCore;
+using DemoApp.Demos;
 
 namespace DemoApp
 {
@@ -44,7 +44,7 @@ namespace DemoApp
             var fileData = File.ReadAllText(files[0]);
             var workflow = JsonConvert.DeserializeObject<List<Workflow>>(fileData);
 
-            RulesEngineDemoContext db = new RulesEngineDemoContext();
+            RulesEngineContext db = new RulesEngineContext();
             if (db.Database.EnsureCreated())
             {
                 db.Workflows.AddRange(workflow);

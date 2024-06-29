@@ -15,16 +15,21 @@ namespace DemoApp
 
             using (var cts = new CancellationTokenSource())
             {
-                await new Demos.Basic().Run(cts.Token);
-                await new Demos.BasicWithCustomTypes().Run(cts.Token);
-                await new Demos.JSON().Run(cts.Token);
-                await new Demos.NestedInput().Run(cts.Token);
-                await new Demos.EF().Run(cts.Token);
-                await new Demos.UseFastExpressionCompiler().Run(cts.Token);
-                await new Demos.MultipleWorkflows().Run(cts.Token);
-                await new Demos.CustomParameterName().Run(cts.Token);
+                await new CancellationToken.Basic().Run(cts.Token);
+                await new CancellationToken.BasicWithCustomTypes().Run(cts.Token);
+                await new CancellationToken.JSON().Run(cts.Token);
+                await new CancellationToken.NestedInput().Run(cts.Token);
+                await new CancellationToken.EF().Run(cts.Token);
+                await new CancellationToken.UseFastExpressionCompiler().Run(cts.Token);
+                await new CancellationToken.MultipleWorkflows().Run(cts.Token);
+                await new CancellationToken.CustomParameterName().Run(cts.Token);
             }
 
+            new BasicDemo().Run();
+            new EFDemo().Run();
+            new JSONDemo().Run();
+            new NestedInputDemo().Run();
+            
             DateTime end = DateTime.Now;
 
             Console.WriteLine($"running time: {end-start}");

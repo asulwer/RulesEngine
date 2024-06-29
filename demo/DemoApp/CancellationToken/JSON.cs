@@ -2,22 +2,18 @@
 //  Licensed under the MIT License.
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using RulesEngine.Models;
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using static RulesEngine.Extensions.ListofRuleResultTreeExtension;
 
-namespace DemoApp.Demos
+namespace DemoApp.CancellationToken
 {
     public class JSON
     {
-        public async Task Run(CancellationToken ct = default)
+        public async Task Run(System.Threading.CancellationToken ct = default)
         {
             Console.WriteLine($"Running {nameof(JSON)}....");
 

@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using DemoApp.Demos;
 using Microsoft.EntityFrameworkCore;
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using static RulesEngine.Extensions.ListofRuleResultTreeExtension;
 
-namespace DemoApp.Demos
+namespace DemoApp.CancellationToken
 {
     public class EF
     {
-        public async Task Run(CancellationToken ct = default)
+        public async Task Run(System.Threading.CancellationToken ct = default)
         {
             Console.WriteLine($"Running {nameof(EF)}....");
 

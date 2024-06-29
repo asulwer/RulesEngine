@@ -1,21 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using RulesEngine.Extensions;
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace DemoApp.Demos
+namespace DemoApp.CancellationToken
 {
     public class MultipleWorkflows
     {
-        public async Task Run(CancellationToken ct = default)
+        public async Task Run(System.Threading.CancellationToken ct = default)
         {
             Console.WriteLine($"Running {nameof(MultipleWorkflows)}....");
 
@@ -90,7 +86,7 @@ namespace DemoApp.Demos
                 new RuleParameter("input1", new { count = 1 })
             };
 
-            foreach(var workflow in workflows)
+            foreach (var workflow in workflows)
             {
                 var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, inputs);
 
@@ -99,14 +95,12 @@ namespace DemoApp.Demos
                 //Different ways to show test results:
                 outcome = ret.TrueForAll(r => r.IsSuccess);
 
-                ret.OnSuccess((eventName) =>
-                {
+                ret.OnSuccess((eventName) => {
                     Console.WriteLine($"Result '{eventName}' is as expected.");
                     outcome = true;
                 });
 
-                ret.OnFail(() =>
-                {
+                ret.OnFail(() => {
                     outcome = false;
                 });
 

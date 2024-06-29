@@ -4,14 +4,13 @@
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace DemoApp.Demos
+namespace DemoApp.CancellationToken
 {
     public class UseFastExpressionCompiler
     {
-        public async Task Run(CancellationToken ct = default)
+        public async Task Run(System.Threading.CancellationToken ct = default)
         {
             var worflow = new Workflow[] {
                 new Workflow {
