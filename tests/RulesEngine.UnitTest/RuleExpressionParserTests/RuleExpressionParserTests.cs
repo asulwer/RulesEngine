@@ -7,7 +7,6 @@ using RulesEngine.Models;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
-using static FastExpressionCompiler.ExpressionCompiler;
 
 namespace RulesEngine.UnitTest.RuleExpressionParserTests
 {

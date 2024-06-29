@@ -3,8 +3,6 @@
 
 using RulesEngine.Models;
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
 using static RulesEngine.Extensions.ListofRuleResultTreeExtension;
@@ -37,25 +35,44 @@ namespace DemoApp.Demos
                 new RuleParameter("input1", new { count = 1 })
             };
 
-            var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", rp);
+            //var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", rp);
 
-            var outcome = false;
+            //var outcome = false;
 
-            //Different ways to show test results:
-            outcome = ret.TrueForAll(r => r.IsSuccess);
+            ////Different ways to show test results:
+            //outcome = ret.TrueForAll(r => r.IsSuccess);
 
-            ret.OnSuccess((eventName) =>
+            //ret.OnSuccess((eventName) =>
+            //{
+            //    Console.WriteLine($"Result '{eventName}' is as expected.");
+            //    outcome = true;
+            //});
+
+            //ret.OnFail(() =>
+            //{
+            //    outcome = false;
+            //});
+
+            //Console.WriteLine($"Test outcome: {outcome}.");
+
+            await foreach (var async_rrt in bre.ExecuteAllWorkflows(rp, ct))
             {
-                Console.WriteLine($"Result '{eventName}' is as expected.");
-                outcome = true;
-            });
+                var outcome = false;
 
-            ret.OnFail(() =>
-            {
-                outcome = false;
-            });
+                //Different ways to show test results:
+                outcome = async_rrt.TrueForAll(r => r.IsSuccess);
 
-            Console.WriteLine($"Test outcome: {outcome}.");
+                async_rrt.OnSuccess((eventName) => {
+                    Console.WriteLine($"Result '{eventName}' is as expected.");
+                    outcome = true;
+                });
+
+                async_rrt.OnFail(() => {
+                    outcome = false;
+                });
+
+                Console.WriteLine($"Test outcome: {outcome}.");
+            }
         }
     }
 }

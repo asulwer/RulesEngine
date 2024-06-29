@@ -15,7 +15,6 @@ using RulesEngine.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,10 +22,10 @@ using System.Threading.Tasks;
 namespace RulesEngine
 {
     /// <summary>
-    /// 
+    /// original code before fork
     /// </summary>
     /// <seealso cref="RulesEngine.Interfaces.IRulesEngine" />
-    public class RulesEngine : IRulesEngine
+    public partial class RulesEngine : IRulesEngine
     {
         #region Variables
 
