@@ -43,7 +43,6 @@ namespace RulesEngine.Actions
             _parentResult = parentResult;
         }
 
-
         public RuleResultTree GetParentRuleResult()
         {
             return _parentResult;

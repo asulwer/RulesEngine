@@ -30,7 +30,6 @@ namespace RulesEngine.Models
             UseFastExpressionCompiler = reSettings.UseFastExpressionCompiler;
         }
 
-
         /// <summary>
         /// Get/Set the custom types to be used in Rule expressions
         /// </summary>

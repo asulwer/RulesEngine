@@ -11,7 +11,6 @@ namespace RulesEngine.HelperFunctions
         public int SizeLimit { get; set; } = 1000;
     }
 
-
     internal class MemCache
     {
         private readonly MemCacheConfig _config;
@@ -45,17 +44,14 @@ namespace RulesEngine.HelperFunctions
                     return true;
                 }   
             }
-            return false;
-           
+            return false;           
         }
-
 
         public T Get<T>(string key)
         {
             TryGetValue<T>(key, out var value);
             return value;
         }
-
 
         /// <summary>
         /// Returns all known keys. May return keys for expired data as well

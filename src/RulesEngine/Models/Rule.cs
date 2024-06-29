@@ -41,6 +41,5 @@ namespace RulesEngine.Models
         public string Expression { get; set; }
         public RuleActions Actions { get; set; }
         public string SuccessEvent { get; set; }
-
     }
 }

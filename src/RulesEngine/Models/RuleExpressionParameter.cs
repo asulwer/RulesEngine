@@ -15,6 +15,5 @@ namespace RulesEngine.Models
         public ParameterExpression ParameterExpression { get; set; }
         
         public Expression ValueExpression { get; set; }
-
     }
 }

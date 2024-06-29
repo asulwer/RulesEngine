@@ -71,8 +71,6 @@ namespace RulesEngine
             }
         }
 
-
-
         /// <summary>
         /// Gets the expression for rule.
         /// </summary>
@@ -183,7 +181,6 @@ namespace RulesEngine
                 return result(paramArray);
             };
         }
-
 
         private (bool isSuccess ,IEnumerable<RuleResultTree> result) ApplyOperation(RuleParameter[] paramArray,IEnumerable<RuleFunc<RuleResultTree>> ruleFuncList, ExpressionType operation)
         {

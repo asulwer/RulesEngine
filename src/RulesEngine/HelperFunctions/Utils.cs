@@ -124,6 +124,4 @@ namespace RulesEngine.HelperFunctions
             return genericMethod.Invoke(null, new[] { self }) as IList;
         }
     }
-
-
 }

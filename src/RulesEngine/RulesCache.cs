@@ -19,12 +19,10 @@ namespace RulesEngine
         /// <summary>The workflow rules</summary>
         private readonly ConcurrentDictionary<string, (Workflow, long)> _workflow = new ConcurrentDictionary<string, (Workflow, long)>();
 
-
         public RulesCache(ReSettings reSettings)
         {
             _compileRules = new MemCache(reSettings.CacheConfig);
         }
-
 
         /// <summary>Determines whether [contains workflow rules] [the specified workflow name].</summary>
         /// <param name="workflowName">Name of the workflow.</param>
@@ -61,7 +59,7 @@ namespace RulesEngine
         /// <summary>Checks if the compiled rules are up-to-date.</summary>
         /// <param name="compiledRuleKey">The compiled rule key.</param>
         /// <param name="workflowName">The workflow name.</param>
-         /// <returns>
+        /// <returns>
         ///   <c>true</c> if [compiled rules] is newer than the [workflow rules]; otherwise, <c>false</c>.</returns>
         public bool AreCompiledRulesUpToDate(string compiledRuleKey, string workflowName)
         {
@@ -117,7 +115,6 @@ namespace RulesEngine
                 return null;
             }
         }
-
 
         /// <summary>Gets the compiled rules.</summary>
         /// <param name="compiledRulesKey">The compiled rules key.</param>
