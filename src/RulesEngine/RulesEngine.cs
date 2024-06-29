@@ -85,7 +85,7 @@ namespace RulesEngine
                 ruleParams.Add(new RuleParameter($"input{i + 1}", input));
             }
 
-            return await ExecuteAllRulesAsync(workflowName, cancellationToken, ruleParams.ToArray());
+            return await ExecuteAllRulesAsync(workflowName, ruleParams.ToArray());
         }
         public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, params RuleParameter[] ruleParams)
         {

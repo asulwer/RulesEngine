@@ -29,7 +29,6 @@ namespace RulesEngine.UnitTest.ActionTests
             var result = await re.ExecuteAllRulesAsync("successReturnContextAction", true);
         }
 
-
         [Fact]
         public async Task CustomAction_WithSystemTextJsobOnRuleMustHaveContextValues()
         {
@@ -45,8 +44,6 @@ namespace RulesEngine.UnitTest.ActionTests
                     { "ReturnContext", () => new ReturnContextAction() }
                 }
             });
-
-
 
             var result = await re.ExecuteAllRulesAsync("successReturnContextAction", true);
         }
@@ -69,18 +66,11 @@ namespace RulesEngine.UnitTest.ActionTests
                                         {"objectContext", new { a = "hello", b = 123 } }
                                     }
                                 }
-
                             }
-
-                        },
-                        
-
+                        }
                     }
                 }
-
             };
         }
-
-
     }
 }

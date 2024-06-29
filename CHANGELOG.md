@@ -2,20 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.2]
+- updated System.Linq.Dynamic.Core to fix a bug [614](https://github.com/microsoft/RulesEngine/issues/614) 
+- created test CachingLiteralsDictionary to verify bug has been fixed
+
+## [6.0.1]
+- CancellationToken was not completely implemented
+- Release builds are strongly signed
+	 
 ## [6.0.0]
+- methods that were marked obsolete have been removed
 - ALL issues in [master](https://github.com/microsoft/RulesEngine/issues) fork have been resolved, usually with a demo app supporting solution
-- Only targeting netstandard2.1
-- Added new overloads for `ExecuteAllRulesAsync` to support cancellation tokens:
-  - `ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params RuleParameter[] ruleParams);`
-  - `ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs);`
+- RulesEngine only targets netstandard2.1
+- Methods with CancellationToken added for all RulesEngine Execute... methods
+- original project is no longer being maintained
 
-- Added new overload for `ExecuteActionWorkflowAsync` to support cancellation tokens:
-  - `ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters, CancellationToken cancellationToken);`
+### Breaking Changes
+- **ActionBase Class Update**: Actions extending from `ActionBase` must now pass a `CancellationToken` parameter. The `Run` method in `ActionBase` requires a `CancellationToken`.
+This ensures that all derived classes handle cancellation requests properly, improving resource management and responsiveness.
+Make sure to update all derived classes to include the `CancellationToken` parameter in their `Run` method implementations.
 
-- Added a `GetCancellationToken` method in `ActionContext` to get the cancellation token:
-  - `public CancellationToken GetCancellationToken();`
-
-These changes let you cancel long-running rule execution processes, making the `RulesEngine` more flexible and responsive.
+## [5.0.4]
+- Refactoring code, big time
+- Upgraded dependencies to latest
 
 ## [5.0.3]
 - Updated dependencies to latest

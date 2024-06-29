@@ -5,6 +5,7 @@ using RulesEngine.ExpressionBuilders;
 using RulesEngine.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RulesEngine.Actions
@@ -20,7 +21,7 @@ namespace RulesEngine.Actions
             _ruleExpressionParser = ruleExpressionParser;
         }
 
-        internal async override ValueTask<ActionRuleResult> ExecuteAndReturnResultAsync(ActionContext context, RuleParameter[] ruleParameters, bool includeRuleResults = false)
+        internal async override ValueTask<ActionRuleResult> ExecuteAndReturnResultAsync(ActionContext context, RuleParameter[] ruleParameters, bool includeRuleResults = false, CancellationToken cancellationToken = default)
         {
             var innerResult = await base.ExecuteAndReturnResultAsync(context, ruleParameters, includeRuleResults);
             var output = innerResult.Output as ActionRuleResult;
@@ -37,7 +38,7 @@ namespace RulesEngine.Actions
             };
         }
 
-        public async override ValueTask<object> Run(ActionContext context, RuleParameter[] ruleParameters)
+        public async override ValueTask<object> Run(ActionContext context, RuleParameter[] ruleParameters, CancellationToken cancellationToken = default)
         {
             var workflowName = context.GetContext<string>("workflowName");
             var ruleName = context.GetContext<string>("ruleName");
