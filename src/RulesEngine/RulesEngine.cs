@@ -68,76 +68,40 @@ namespace RulesEngine
 
         #region Public Methods
 
-        /// <summary>
-        /// This will execute all the rules of the specified workflow
-        /// </summary>
-        /// <param name="workflowName">The name of the workflow with rules to execute against the inputs</param>
-        /// <param name="inputs">A variable number of inputs</param>
-        /// <returns>List of rule results</returns>
         public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, params object[] inputs)
         {
-            var ruleParams = new List<RuleParameter>();
-
-            for (var i = 0; i < inputs.Length; i++)
-            {
-                var input = inputs[i];
-                ruleParams.Add(new RuleParameter($"input{i + 1}", input));
-            }
-
-            return await ExecuteAllRulesAsync(workflowName, ruleParams.ToArray());
+            return await ExecuteAllRulesAsync(workflowName, inputs, CancellationToken.None);
         }
-
-        /// <summary>
-        /// This will execute all the rules of the specified workflow
-        /// </summary>
-        /// <param name="workflowName">The name of the workflow with rules to execute against the inputs</param>
-        /// <param name="cancellationToken">cancel the request</param>
-        /// <param name="inputs">A variable number of inputs</param>
-        /// <returns>List of rule results</returns>
-        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs)
+        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, object[] inputs, CancellationToken cancellationToken)
         {
             var ruleParams = new List<RuleParameter>();
 
             for (var i = 0; i < inputs.Length; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+
                 var input = inputs[i];
                 ruleParams.Add(new RuleParameter($"input{i + 1}", input));
             }
 
             return await ExecuteAllRulesAsync(workflowName, cancellationToken, ruleParams.ToArray());
         }
-
-        /// <summary>
-        /// This will execute all the rules of the specified workflow
-        /// </summary>
-        /// <param name="workflowName">The name of the workflow with rules to execute against the inputs</param>
-        /// <param name="ruleParams">A variable number of rule parameters</param>
-        /// <returns>List of rule results</returns>
         public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, params RuleParameter[] ruleParams)
         {
-            var sortedRuleParams = ruleParams.ToList();
-            sortedRuleParams.Sort((RuleParameter a, RuleParameter b) => string.Compare(a.Name, b.Name));
-            var ruleResultList = ValidateWorkflowAndExecuteRule(workflowName, sortedRuleParams.ToArray());
-            await ExecuteActionAsync(ruleResultList);
-            return ruleResultList;
+            return await ExecuteAllRulesAsync(workflowName, ruleParams, CancellationToken.None);
         }
-
-        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params RuleParameter[] ruleParams)
+        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, RuleParameter[] ruleParams, CancellationToken cancellationToken = default)
         {
-            var sortedRuleParams = ruleParams.ToList();
-            sortedRuleParams.Sort((RuleParameter a, RuleParameter b) => string.Compare(a.Name, b.Name));
-            var ruleResultList = ValidateWorkflowAndExecuteRule(workflowName, sortedRuleParams.ToArray());
+            Array.Sort(ruleParams, (RuleParameter a, RuleParameter b) => string.Compare(a.Name, b.Name));
+            var ruleResultList = ValidateWorkflowAndExecuteRule(workflowName, ruleParams);
             await ExecuteActionAsync(ruleResultList, cancellationToken);
             return ruleResultList;
         }
-
         public async ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters)
         {
-            var compiledRule = CompileRule(workflowName, ruleName, ruleParameters);
-            var resultTree = compiledRule(ruleParameters);
-            return await ExecuteActionForRuleResult(resultTree, true);
+            return await ExecuteActionWorkflowAsync(workflowName, ruleName, ruleParameters, CancellationToken.None);
         }
-
         public async ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters, CancellationToken cancellationToken)
         {
             var compiledRule = CompileRule(workflowName, ruleName, ruleParameters);
@@ -252,10 +216,12 @@ namespace RulesEngine
         {
             foreach (var ruleResult in ruleResultList)
             {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+
                 if (ruleResult.ChildResults != null)
-                {
                     await ExecuteActionAsync(ruleResult.ChildResults);
-                }
+                
                 var actionResult = await ExecuteActionForRuleResult(ruleResult, false, cancellationToken);
                 ruleResult.ActionResult = new ActionResult {
                     Output = actionResult.Output,
@@ -279,7 +245,7 @@ namespace RulesEngine
             {
                 //If there is no action,return output as null and return the result for rule
                 return new ActionRuleResult {
-                    Output = null,
+                    //Output = null, //pointless to set this as this is set by default
                     Results = includeRuleResults ? new List<RuleResultTree>() { resultTree } : null
                 };
             }
