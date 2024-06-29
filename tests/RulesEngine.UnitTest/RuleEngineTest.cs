@@ -1054,16 +1054,13 @@ namespace RulesEngine.UnitTest
         }
 
         [Theory]
-        [InlineData(typeof(RulesEngine), typeof(IRulesEngine))]
-        public void Class_PublicMethods_ArePartOfInterface(Type classType, Type interfaceType)
+        [InlineData(typeof(RulesEngine), new[] { typeof(IBaseRulesEngine), typeof(IRulesEngine), typeof(IRulesEngineEx) })]
+        public void Class_PublicMethods_ArePartOfInterface(Type classType, Type[] interfaceType)
         {
-            var classMethods = classType.GetMethods(BindingFlags.DeclaredOnly |
-                        BindingFlags.Public |
-                        BindingFlags.Instance);
+            var classMethods = classType.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance).Count();
+            var interfaceMethods = (from Type t in interfaceType select t.GetMethods().Count()).Sum();
 
-            var interfaceMethods = interfaceType.GetMethods();
-
-            Assert.Equal(interfaceMethods.Count(), classMethods.Count());
+            Assert.Equal(interfaceMethods, classMethods);
         }
 
         private RulesEngine CreateRulesEngine(Workflow workflow)
