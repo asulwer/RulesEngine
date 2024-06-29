@@ -6,7 +6,6 @@ using RulesEngine.HelperFunctions;
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Dynamic.Core.Exceptions;
 using System.Linq.Expressions;
 

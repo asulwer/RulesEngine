@@ -3,7 +3,6 @@
 
 using RulesEngine.ExpressionBuilders;
 using RulesEngine.Models;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RulesEngine.Actions

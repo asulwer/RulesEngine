@@ -3,11 +3,7 @@
 
 using RulesEngine.Actions;
 using RulesEngine.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RulesEngine.UnitTest.ActionTests.MockClass
