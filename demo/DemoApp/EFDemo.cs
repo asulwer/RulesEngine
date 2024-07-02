@@ -37,7 +37,7 @@ public class EFDemo : IDemo
         }
 
         var fileData = await File.ReadAllTextAsync(files[0], cancellationToken);
-        var workflow = JsonSerializer.Deserialize<List<Workflow>>(fileData);
+        var workflow = JsonSerializer.Deserialize<List<Workflow>>(fileData)!;
 
         Workflow[] workflows = null;
         using(var db = new RulesEngineContext())
@@ -68,3 +68,4 @@ public class EFDemo : IDemo
         Console.WriteLine(discountOffered);
     }
 }
+
