@@ -47,16 +47,17 @@ namespace RulesEngine.HelperFunctions
                 foreach (var expando in (IDictionary<string, object>)input)
                 {
                     Type value;
-                    if (expando.Value is IList)
+                    if (expando.Value is IList list)
                     {
-                        if (((IList)expando.Value).Count == 0)
+                        if (list.Count == 0)
+                        {
                             value = typeof(List<object>);
+                        }
                         else
                         {
-                            var internalType = CreateAbstractClassType(((IList)expando.Value)[0]);
-                            value = new List<object>().Cast(internalType).ToList(internalType).GetType();
+                            var internalType = CreateAbstractClassType(list[0]);
+                            value = typeof(List<>).MakeGenericType(internalType);
                         }
-
                     }
                     else
                     {
@@ -72,6 +73,11 @@ namespace RulesEngine.HelperFunctions
 
         public static object CreateObject(Type type, dynamic input)
         {
+            if (input is JsonElement inputElement)
+            {
+                return CreateObject(type, inputElement.ToExpandoObject());
+            }
+
             if (!(input is ExpandoObject))
             {
                 return Convert.ChangeType(input, type);
@@ -106,7 +112,7 @@ namespace RulesEngine.HelperFunctions
                     }
                     else if (expando.Value is JsonElement expandoElement)
                     {
-                        val = expandoElement.ToExpandoObject();
+                        val = CreateObject(propInfo.PropertyType, expandoElement);
                     }
                     else
                     {

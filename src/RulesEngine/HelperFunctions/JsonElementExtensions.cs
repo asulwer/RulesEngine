@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Text.Json;
 
@@ -33,26 +30,32 @@ namespace RulesEngine.HelperFunctions
                     return element.GetString();
 
                 case JsonValueKind.Number:
-                    if (element.TryGetInt32(out var intValue))
-                    {
-                        return intValue;
-                    }
-                    if (element.TryGetInt64(out var longValue))
-                    {
-                        return longValue;
-                    }
-
-                    return element.GetDecimal();
+                    return GetNumberValue(element);
 
                 case JsonValueKind.True:
                 case JsonValueKind.False:
                     return element.GetBoolean();
 
-                case JsonValueKind.Undefined:
                 case JsonValueKind.Null:
+                    return null;
+
                 default:
                     return null;
             }
+        }
+
+        private static object GetNumberValue(JsonElement element)
+        {
+            if (element.TryGetInt64(out var longValue))
+            {
+                return longValue;
+            }
+            if (element.TryGetDouble(out var doubleValue))
+            {
+                return doubleValue;
+            }
+
+            return element.GetDecimal();
         }
     }
 }

@@ -106,11 +106,9 @@ namespace RulesEngine.UnitTest
         public void CreateAbstractClassType_WithJsonElement_ShouldConvertToExpandoObject()
         {
             const string jsonString = @"{""name"":""John"", ""age"":30, ""isStudent"":false}";
-            var document = JsonDocument.Parse(jsonString);
-            var jsonElement = document.RootElement;
+            var document = JsonSerializer.Deserialize<ExpandoObject>(jsonString);
 
-            var type = Utils.CreateAbstractClassType(jsonElement);
-
+            var type = Utils.CreateAbstractClassType(document);
             var propertyNames = type.GetProperties().Select(p => p.Name).ToArray();
 
             Assert.Contains("name", propertyNames);
@@ -122,12 +120,10 @@ namespace RulesEngine.UnitTest
         public void CreateObject_WithJsonElement_ShouldConvertToExpandoObject()
         {
             var jsonString = @"{""name"":""John"", ""age"":30, ""isStudent"":false}";
-            var document = JsonDocument.Parse(jsonString);
-            var jsonElement = document.RootElement;
-            var expando = jsonElement.ToExpandoObject();
+            var document = JsonSerializer.Deserialize<ExpandoObject>(jsonString);
 
-            Type type = Utils.CreateAbstractClassType(expando);
-            var result = Utils.CreateObject(type, expando);
+            var type = Utils.CreateAbstractClassType(document);
+            dynamic result = Utils.CreateObject(type, document);
 
             Assert.Equal("John", result.name);
             Assert.Equal(30, result.age);
@@ -138,12 +134,10 @@ namespace RulesEngine.UnitTest
         public void CreateObject_WithJsonElementNested_ShouldConvertToExpandoObject()
         {
             var jsonString = @"{""name"":""John"", ""details"":{""age"":30, ""isStudent"":false}}";
-            var document = JsonDocument.Parse(jsonString);
-            var jsonElement = document.RootElement;
-            var expando = jsonElement.ToExpandoObject();
+            var document = JsonSerializer.Deserialize<ExpandoObject>(jsonString);
 
-            Type type = Utils.CreateAbstractClassType(expando);
-            var result = Utils.CreateObject(type, expando);
+            var type = Utils.CreateAbstractClassType(document);
+            dynamic result = Utils.CreateObject(type, document);
 
             Assert.Equal("John", result.name);
             Assert.Equal(30, result.details.age);
@@ -153,20 +147,19 @@ namespace RulesEngine.UnitTest
         [Fact]
         public void CreateObject_WithJsonElementArray_ShouldConvertToExpandoObject()
         {
-            const string jsonString = @"{""name"":""John"", ""scores"":[100, 95, 85]}";
-            var document = JsonDocument.Parse(jsonString);
-            var jsonElement = document.RootElement;
-            var expando = jsonElement.ToExpandoObject();
+            const string jsonString = @"{""name"":""John"", ""scores"":[100, 95.7, 85]}";
+            var document = JsonSerializer.Deserialize<ExpandoObject>(jsonString);
 
-            var type = Utils.CreateAbstractClassType(expando);
-            var result = Utils.CreateObject(type, expando);
+
+            var type = Utils.CreateAbstractClassType(document);
+            dynamic result = Utils.CreateObject(type, document);
 
             Assert.Equal("John", result.name);
 
-            var scores = (List<int>)result["scores"];
-            Assert.Equal(100, scores[0]);
-            Assert.Equal(95, scores[1]);
-            Assert.Equal(85, scores[2]);
+            var scores = (List<object>)result["scores"];
+            Assert.Equal(100l, scores[0]);
+            Assert.Equal(95.7, scores[1]);
+            Assert.Equal(85l, scores[2]);
         }
     }
 }

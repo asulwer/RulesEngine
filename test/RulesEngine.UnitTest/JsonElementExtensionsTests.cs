@@ -67,7 +67,7 @@ public class JsonElementExtensionsTests
         var document = JsonDocument.Parse(jsonString);
         var expando = document.RootElement.ToExpandoObject();
 
-        Assert.Equal(12345.6789m, expando);
+        Assert.Equal(12345.6789, expando);
     }
 
     [Fact]
