@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 //  Licensed under the MIT License.
 
-using DemoApp.EFDataExample;
 using Microsoft.EntityFrameworkCore;
 using RulesEngine.Extensions;
 using RulesEngine.Models;
@@ -40,16 +39,19 @@ public class EFDemo : IDemo
         var fileData = await File.ReadAllTextAsync(files[0], cancellationToken);
         var workflow = JsonSerializer.Deserialize<List<Workflow>>(fileData);
 
-        var db = new RulesEngineDemoContext();
-        if (await db.Database.EnsureCreatedAsync(cancellationToken))
+        Workflow[] workflows = null;
+        using(var db = new RulesEngineContext())
         {
-            db.Workflows.AddRange(workflow);
-            await db.SaveChangesAsync(cancellationToken);
-        }
+            if (await db.Database.EnsureCreatedAsync(cancellationToken))
+            {
+                db.Workflows.AddRange(workflow);
+                await db.SaveChangesAsync(cancellationToken);
+            }
 
-        var wfr = db.Workflows.Include(i => i.Rules).ThenInclude(i => i.Rules).ToArray();
+            workflows = db.Workflows.Include(i => i.Rules).ThenInclude(i => i.Rules).ToArray();
+        }       
 
-        var bre = new RulesEngine.RulesEngine(wfr);
+        var bre = new RulesEngine.RulesEngine(workflows);
 
         var discountOffered = "No discount offered.";
 
