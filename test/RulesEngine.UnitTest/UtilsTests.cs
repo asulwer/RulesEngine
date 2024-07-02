@@ -157,9 +157,9 @@ namespace RulesEngine.UnitTest
             Assert.Equal("John", result.name);
 
             var scores = (List<object>)result["scores"];
-            Assert.Equal(100l, scores[0]);
+            Assert.Equal(100L, scores[0]);
             Assert.Equal(95.7, scores[1]);
-            Assert.Equal(85l, scores[2]);
+            Assert.Equal(85L, scores[2]);
         }
     }
 }
