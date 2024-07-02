@@ -86,7 +86,15 @@ namespace RulesEngine
         /// <returns>List of rule results</returns>
         public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, params object[] inputs)
         {
-            return await ExecuteAllRulesAsync(workflowName, CancellationToken.None, inputs);
+            var ruleParams = new List<RuleParameter>();
+
+            for (var i = 0; i < inputs.Length; i++)
+            {
+                var input = inputs[i];
+                ruleParams.Add(new RuleParameter($"input{i + 1}", input));
+            }
+
+            return await ExecuteAllRulesAsync(workflowName, ruleParams.ToArray());
         }
 
         /// <summary>
