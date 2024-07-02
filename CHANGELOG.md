@@ -3,19 +3,36 @@
 All notable changes to this project will be documented in this file.
 
 ## [6.0.0]
-- ALL issues in [master](https://github.com/microsoft/RulesEngine/issues) fork have been resolved, usually with a demo app supporting solution
-- Only targeting netstandard2.1
-- Added new overloads for `ExecuteAllRulesAsync` to support cancellation tokens:
-  - `ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params RuleParameter[] ruleParams);`
-  - `ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs);`
 
-- Added new overload for `ExecuteActionWorkflowAsync` to support cancellation tokens:
-  - `ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters, CancellationToken cancellationToken);`
+- **GitHub Actions**
+  - Updated `codeql` task.
+  - Updated `coverallsapp/github-action` from `v2.2.1` to `v2.3.0`.
 
+### Changed
+- Switched JSON serialization library from `Newtonsoft.Json` to `System.Text.Json`.
+
+### Added
+- Added more demo examples in the demo project.
+- Action context now has access to cancellation tokens.
+- New overloads for `ExecuteAllRulesAsync` to support cancellation tokens:
+  ```csharp
+  ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs);
+  ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, RuleParameter[] ruleParams, CancellationToken cancellationToken);
+  ```
+- New overload for `ExecuteActionWorkflowAsync` to support cancellation tokens:
+  ```csharp
+  ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters, CancellationToken cancellationToken);
+  ```
 - Added a `GetCancellationToken` method in `ActionContext` to get the cancellation token:
-  - `public CancellationToken GetCancellationToken();`
+  ```csharp
+  public CancellationToken GetCancellationToken();
+  ```
 
-These changes let you cancel long-running rule execution processes, making the `RulesEngine` more flexible and responsive.
+### Fixed
+- All issues in the master fork have been resolved, usually with a demo app supporting the solution.
+
+### Target Framework
+- Only targeting `netstandard2.1`.
 
 ## [5.0.3]
 - Updated dependencies to latest
