@@ -25,7 +25,7 @@ namespace RulesEngine.Interfaces
         /// <param name="cancellationToken">token to enable canceling the request</param>
         /// <param name="inputs">A variable number of inputs</param>
         /// <returns>List of rule results</returns>
-        ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, object[] inputs, CancellationToken cancellationToken);
+        ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs);
 
         /// <summary>
         /// This will execute all the rules of the specified workflow

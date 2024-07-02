@@ -86,7 +86,7 @@ namespace RulesEngine
         /// <returns>List of rule results</returns>
         public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, params object[] inputs)
         {
-            return await ExecuteAllRulesAsync(workflowName, inputs, CancellationToken.None);
+            return await ExecuteAllRulesAsync(workflowName, CancellationToken.None, inputs);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace RulesEngine
         /// <param name="cancellationToken">cancel the request</param>
         /// <param name="inputs">A variable number of inputs</param>
         /// <returns>List of rule results</returns>
-        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, object[] inputs, CancellationToken cancellationToken)
+        public async ValueTask<List<RuleResultTree>> ExecuteAllRulesAsync(string workflowName, CancellationToken cancellationToken, params object[] inputs)
         {
             var ruleParams = new List<RuleParameter>();
 

@@ -262,7 +262,7 @@ namespace RulesEngine.UnitTest
             dynamic input1 = new ExpandoObject();
             input1.trueValue = true;
 
-            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", new[] { input1 }, CancellationToken.None);
+            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", CancellationToken.None, new[] { input1 });
 
             Assert.False(result[0].IsSuccess);
             Assert.Equal(input1.trueValue, result[0].ActionResult.Output);
@@ -284,7 +284,7 @@ namespace RulesEngine.UnitTest
             dynamic input1 = new ExpandoObject();
             input1.trueValue = true;
 
-            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", new[] { input1 }, CancellationToken.None);
+            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", CancellationToken.None, new[] { input1 });
 
             Assert.False(result[0].IsSuccess);
             Assert.Equal(input1.trueValue, result[0].ActionResult.Output);
