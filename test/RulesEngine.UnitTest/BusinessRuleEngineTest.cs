@@ -825,7 +825,7 @@ namespace RulesEngine.UnitTest
             var re = GetRulesEngine(ruleFileName, settings);
             var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
 
-            var result = await re.ExecuteAllRulesAsync("inputWorkflowReference", cancellationTokenSource.Token, Array.Empty<RuleParameter>());
+            var result = await re.ExecuteAllRulesAsync("inputWorkflowReference", Array.Empty<RuleParameter>(), cancellationTokenSource.Token);
             Assert.NotNull(result);
 
             var exceptionruleOne = result[0].ActionResult?.Exception;
@@ -1111,18 +1111,13 @@ namespace RulesEngine.UnitTest
 
 
         [Theory]
-        [InlineData(typeof(RulesEngine), typeof(IRulesEngine))]
-        public void Class_PublicMethods_ArePartOfInterface(Type classType, Type interfaceType)
+        [InlineData(typeof(RulesEngine), new[] { typeof(IRulesEngine) })]
+        public void Class_PublicMethods_ArePartOfInterface(Type classType, Type[] interfaceType)
         {
-            var classMethods = classType.GetMethods(BindingFlags.DeclaredOnly |
-                        BindingFlags.Public |
-                        BindingFlags.Instance);
+            var classMethods = classType.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance).Count();
+            var interfaceMethods = (from Type t in interfaceType select t.GetMethods().Count()).Sum();
 
-
-            var interfaceMethods = interfaceType.GetMethods();
-
-
-            Assert.Equal(interfaceMethods.Count(), classMethods.Count());
+            Assert.Equal(interfaceMethods, classMethods);
         }
 
 

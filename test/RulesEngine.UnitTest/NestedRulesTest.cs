@@ -17,7 +17,6 @@ namespace RulesEngine.UnitTest
     [ExcludeFromCodeCoverage]
     public class NestedRulesTest
     {
-
         [Theory]
         [InlineData(NestedRuleExecutionMode.All)]
         [InlineData(NestedRuleExecutionMode.Performance)]
@@ -32,18 +31,13 @@ namespace RulesEngine.UnitTest
             List<RuleResultTree> result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesTest", input1);
             var andResults = result.Where(c => c.Rule.Operator == "And").ToList();
             var orResults = result.Where(c => c.Rule.Operator == "Or").ToList();
-            Assert.All(andResults,
-                c => Assert.False(c.IsSuccess)
-                );
-            Assert.All(orResults,
-                c => Assert.True(c.IsSuccess));
+            Assert.All(andResults, c => Assert.False(c.IsSuccess));
+            Assert.All(orResults, c => Assert.True(c.IsSuccess));
 
             if (mode == NestedRuleExecutionMode.All)
             {
-                Assert.All(andResults,
-                    c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
-                Assert.All(orResults,
-                    c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
+                Assert.All(andResults, c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
+                Assert.All(orResults, c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
             }
             else if (mode == NestedRuleExecutionMode.Performance)
             {
@@ -60,10 +54,7 @@ namespace RulesEngine.UnitTest
                         Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == false));
                     });
-
             }
-
-
         }
 
         [Fact]
@@ -90,7 +81,6 @@ namespace RulesEngine.UnitTest
 
             var serializationOptions = new System.Text.Json.JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
 
-
             var workflowViaTextJson = System.Text.Json.JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
 
             var reSettings = new ReSettings { };
@@ -103,8 +93,6 @@ namespace RulesEngine.UnitTest
             Assert.False(result[0].IsSuccess);
             Assert.Equal(input1.trueValue, result[0].ActionResult.Output);
             Assert.All(result[0].ChildResults, (childResult) => Assert.Equal(input1.trueValue, childResult.ActionResult.Output));
-
-
         }
 
         private Workflow[] GetWorkflow()
@@ -208,17 +196,16 @@ namespace RulesEngine.UnitTest
                                 }
                             },
                             Actions =  new RuleActions {
-                                        OnFailure = new ActionInfo{
-                                            Name = "OutputExpression",
-                                            Context = new Dictionary<string, object> {
-                                                { "Expression", "input1.TrueValue" }
-                                            }
-                                        }
+                                OnFailure = new ActionInfo{
+                                    Name = "OutputExpression",
+                                    Context = new Dictionary<string, object> {
+                                        { "Expression", "input1.TrueValue" }
                                     }
+                                }
+                            }
                         }
                     }
                 }
-
             };
         }
     }
@@ -226,7 +213,6 @@ namespace RulesEngine.UnitTest
     [ExcludeFromCodeCoverage]
     public class NestedRulesCancellationOverloadTest
     {
-
         [Theory]
         [InlineData(NestedRuleExecutionMode.All)]
         [InlineData(NestedRuleExecutionMode.Performance)]
@@ -238,21 +224,16 @@ namespace RulesEngine.UnitTest
             dynamic input1 = new ExpandoObject();
             input1.trueValue = true;
 
-            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesTest", CancellationToken.None, new[] { input1 });
+            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesTest", new[] { input1 });
             var andResults = result.Where(c => c.Rule.Operator == "And").ToList();
             var orResults = result.Where(c => c.Rule.Operator == "Or").ToList();
-            Assert.All(andResults,
-                c => Assert.False(c.IsSuccess)
-                );
-            Assert.All(orResults,
-                c => Assert.True(c.IsSuccess));
+            Assert.All(andResults,c => Assert.False(c.IsSuccess));
+            Assert.All(orResults,c => Assert.True(c.IsSuccess));
 
             if (mode == NestedRuleExecutionMode.All)
             {
-                Assert.All(andResults,
-                    c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
-                Assert.All(orResults,
-                    c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
+                Assert.All(andResults,c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
+                Assert.All(orResults,c => Assert.Equal(c.Rule.Rules.Count(), c.ChildResults.Count()));
             }
             else if (mode == NestedRuleExecutionMode.Performance)
             {
@@ -269,10 +250,7 @@ namespace RulesEngine.UnitTest
                         Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == false));
                     });
-
             }
-
-
         }
 
         [Fact]
@@ -284,7 +262,7 @@ namespace RulesEngine.UnitTest
             dynamic input1 = new ExpandoObject();
             input1.trueValue = true;
 
-            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", CancellationToken.None, new[] { input1 });
+            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", new[] { input1 }, CancellationToken.None);
 
             Assert.False(result[0].IsSuccess);
             Assert.Equal(input1.trueValue, result[0].ActionResult.Output);
@@ -299,7 +277,6 @@ namespace RulesEngine.UnitTest
 
             var serializationOptions = new System.Text.Json.JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
 
-
             var workflowViaTextJson = System.Text.Json.JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
 
             var reSettings = new ReSettings { };
@@ -307,13 +284,11 @@ namespace RulesEngine.UnitTest
             dynamic input1 = new ExpandoObject();
             input1.trueValue = true;
 
-            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", CancellationToken.None, new[] { input1 });
+            var result = await rulesEngine.ExecuteAllRulesAsync("NestedRulesActionsTest", new[] { input1 }, CancellationToken.None);
 
             Assert.False(result[0].IsSuccess);
             Assert.Equal(input1.trueValue, result[0].ActionResult.Output);
             Assert.All(result[0].ChildResults, (childResult) => Assert.Equal(input1.trueValue, childResult.ActionResult.Output));
-
-
         }
 
         private Workflow[] GetWorkflow()
@@ -417,17 +392,16 @@ namespace RulesEngine.UnitTest
                                 }
                             },
                             Actions =  new RuleActions {
-                                        OnFailure = new ActionInfo{
-                                            Name = "OutputExpression",
-                                            Context = new Dictionary<string, object> {
-                                                { "Expression", "input1.TrueValue" }
-                                            }
-                                        }
+                                OnFailure = new ActionInfo{
+                                    Name = "OutputExpression",
+                                    Context = new Dictionary<string, object> {
+                                        { "Expression", "input1.TrueValue" }
                                     }
+                                }
+                            }
                         }
                     }
                 }
-
             };
         }
     }
