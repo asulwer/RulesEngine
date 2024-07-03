@@ -1,0 +1,68 @@
+name: Build and Publish NuGet Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Sign and Build Project
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          pwsh -File ./deployment/build-signed.ps1 -csprojFilePath './src/RulesEngine/RulesEngine.csproj' -signingKey $SIGNING_KEY
+
+      - name: Create NuGet package
+        run: |
+          # Extract version from the tag
+          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')
+          # Create the NuGet package with the version from the tag
+          dotnet pack --configuration Release --no-build --output ./nuget_packages /p:PackageVersion=$VERSION
+
+      - name: Publish NuGet package to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push ./nuget_packages/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+
+      - name: Create source code zip
+        run: |
+          git archive -o source.zip HEAD
+        continue-on-error: true
+
+      - name: Create source code tar
+        run: |
+          git archive -o source.tar.gz HEAD
+        continue-on-error: true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: source-archives
+          path: |
+            source.zip
+            source.tar.gz
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./nuget_packages/*.nupkg
+            source.zip
+            source.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
