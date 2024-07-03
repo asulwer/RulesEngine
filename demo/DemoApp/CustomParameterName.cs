@@ -31,7 +31,7 @@ public class CustomParameterName : IDemo
 
         var rp = new RuleParameter[] { new("myValue", new { Value1 = "Fabrikam" }) };
 
-        var ret = await bre.ExecuteAllRulesAsync("my_workflow", cancellationToken, rp);
+        var ret = await bre.ExecuteAllRulesAsync("my_workflow", rp, cancellationToken);
 
         //Different ways to show test results:
         var outcome = ret.TrueForAll(r => r.IsSuccess);
