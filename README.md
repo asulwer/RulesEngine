@@ -1,5 +1,5 @@
 # Rules Engine
-![build](https://github.com/asulwer/RulesEngine/workflows/build/badge.svg?branch=main)
+![build](https://github.com/asulwer/RulesEngine/workflows/dotnetcore-build.yml/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/asulwer/RulesEngine/badge.svg?branch=main)](https://coveralls.io/github/asulwer/RulesEngine?branch=main)
 [![Nuget download][download-image]][download-url]
 
