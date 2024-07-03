@@ -14,7 +14,7 @@ Rules Engine is a library/NuGet package for abstracting business logic/rules/pol
 
 ## Installation
 
-To install this library, download the latest version of [NuGet Package](https://www.nuget.org/packages/RulesEngine/) from [nuget.org](https://www.nuget.org/) and refer it into your project.  
+To install this library, download the latest version of [NuGet Package](https://www.nuget.org/packages/RulesEngineEx/) from [nuget.org](https://www.nuget.org/) and refer it into your project.  
 
 ## How to use it
 
