@@ -37,7 +37,7 @@ public class BasicWithCustomTypes : IDemo
 
         var rp = new RuleParameter[] {new("string1", "hello")};
 
-        var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", cancellationToken, rp);
+        var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", rp, cancellationToken);
 
         ret.OnSuccess(eventName => {
             Console.WriteLine($"Result '{eventName}' is as expected.");

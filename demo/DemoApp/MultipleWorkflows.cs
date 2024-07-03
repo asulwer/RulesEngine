@@ -83,7 +83,7 @@ public class MultipleWorkflows : IDemo
 
         foreach (var workflow in workflows)
         {
-            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, cancellationToken, inputs);
+            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, inputs, cancellationToken);
 
             //Different ways to show test results:
             var outcome = ret.TrueForAll(r => r.IsSuccess);

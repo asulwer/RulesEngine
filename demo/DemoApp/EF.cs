@@ -95,7 +95,7 @@ public class EF : IDemo
 
         foreach (var workflow in wfr)
         {
-            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, cancellationToken, rp);
+            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, rp, cancellationToken);
 
             ret.OnSuccess(eventName => {
                 Console.WriteLine($"Discount offered is {eventName} % over MRP.");

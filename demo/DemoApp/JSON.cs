@@ -43,7 +43,7 @@ public class JSON : IDemo
 
         var bre = new RulesEngine.RulesEngine(workflow);
 
-        var ret = await bre.ExecuteAllRulesAsync("Discount", cancellationToken, rp);
+        var ret = await bre.ExecuteAllRulesAsync("Discount", rp, cancellationToken);
 
         ret.OnSuccess(eventName => {
             Console.WriteLine($"Discount offered is {eventName} % over MRP.");

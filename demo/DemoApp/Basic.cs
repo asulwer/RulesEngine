@@ -34,7 +34,7 @@ public class Basic : IDemo
 
         var rp = new RuleParameter[] {new("input1", new {count = 1})};
 
-        var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", cancellationToken, rp);
+        var ret = await bre.ExecuteAllRulesAsync("Test Workflow Rule 1", rp, cancellationToken);
 
         //Different ways to show test results:
         var outcome = ret.TrueForAll(r => r.IsSuccess);

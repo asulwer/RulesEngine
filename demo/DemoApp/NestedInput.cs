@@ -46,7 +46,7 @@ public class NestedInput : IDemo
 
         foreach (var workflow in workflows)
         {
-            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, cancellationToken, rp);
+            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, rp, cancellationToken);
 
             ret.OnSuccess(eventName => {
                 Console.WriteLine($"evaluation resulted in success - {eventName}");
