@@ -1,6 +1,6 @@
 # Rules Engine
 ![build](https://github.com/asulwer/RulesEngine/workflows/build/badge.svg?branch=main)
-[![Coverage Status](https://coveralls.io/repos/github/asulwer/RulesEngineEx/badge.svg?branch=main)](https://coveralls.io/github/asulwer/RulesEngine?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/asulwer/RulesEngine/badge.svg?branch=main)](https://coveralls.io/github/asulwer/RulesEngine?branch=main)
 [![Nuget download][download-image]][download-url]
 
 [download-image]: https://img.shields.io/nuget/dt/RulesEngineEx
