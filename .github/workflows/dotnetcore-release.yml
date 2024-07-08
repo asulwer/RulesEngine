@@ -58,7 +58,7 @@ jobs:
             source.tar.gz
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             ./nuget_packages/*.nupkg
