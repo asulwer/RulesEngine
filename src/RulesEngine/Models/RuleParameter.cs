@@ -3,23 +3,23 @@
 
 using RulesEngine.HelperFunctions;
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
 namespace RulesEngine.Models
 {
-    [ExcludeFromCodeCoverage]
     public class RuleParameter
     {
         public RuleParameter(string name, object value)
         {
+            OriginalValue = value;
             Value = Utils.GetTypedObject(value);
             Init(name, Value?.GetType());
         }
 
-       
-        internal RuleParameter(string name, Type type,object value = null)
+        internal RuleParameter(string name, Type type, object value = null)
         {
+            OriginalValue = value;
             Value = Utils.GetTypedObject(value);
             Init(name, type);
         }
@@ -27,6 +27,7 @@ namespace RulesEngine.Models
         public Type Type { get; private set; }
         public string Name { get; private set; }
         public object Value { get; private set; }
+        public object OriginalValue { get; private set; }
         public ParameterExpression ParameterExpression { get; private set; }
 
         private void Init(string name, Type type)
@@ -40,9 +41,26 @@ namespace RulesEngine.Models
         {
             var typedValue = Utils.GetTypedObject(value);
             var type = typedValue?.GetType() ?? typeof(T);
-            return new RuleParameter(name,type,value);
+            return new RuleParameter(name, type, value);
         }
 
+        public bool TryGetPropertyValue<T>(string propertyName, out T value)
+        {
+            value = default;
 
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                return false;
+            }
+
+            if (Value is DynamicClass dc)
+            {
+                var result = dc.GetDynamicPropertyValue<T>(propertyName);
+                value = result;
+                return true;
+            }
+
+            return false;
+        }
     }
 }
