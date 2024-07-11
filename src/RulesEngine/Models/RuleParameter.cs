@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using FastExpressionCompiler;
 using RulesEngine.HelperFunctions;
 using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
@@ -53,7 +55,7 @@ namespace RulesEngine.Models
                 return false;
             }
 
-            if (Value is DynamicClass dc)
+            if (Value is DynamicClass dc && dc.GetDynamicMemberNames().Contains(propertyName))
             {
                 var result = dc.GetDynamicPropertyValue<T>(propertyName);
                 value = result;

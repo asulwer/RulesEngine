@@ -34,7 +34,7 @@ namespace RulesEngine.Tests
             var ruleParameter = new RuleParameter("data", input);
 
             // Act
-            var result = ruleParameter.TryGetPropertyValue<int>("nonExistentProperty", out var value);
+            var result = ruleParameter.TryGetPropertyValue<int?>("nonExistentProperty", out var value);
 
             // Assert
             Assert.False(result);
@@ -54,7 +54,7 @@ namespace RulesEngine.Tests
 
             // Assert
             Assert.True(result);
-            Assert.Equal(default, value);
+            Assert.Equal(input.count, value);
         }
 
         [Fact]
