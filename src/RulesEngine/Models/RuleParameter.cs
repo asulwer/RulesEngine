@@ -18,7 +18,7 @@ namespace RulesEngine.Models
         /// <summary>
         /// Extension method that turns a dictionary of string and object to an ExpandoObject
         /// </summary>
-        public static ExpandoObject ToExpando(this IDictionary<string, object> dictionary)
+        public static ExpandoObject ToExpando<T>(this IDictionary<string, object> dictionary) where T : RuleParameter
         {
             var expando = new ExpandoObject();
             var expandoDic = (IDictionary<string, object>)expando;
@@ -29,7 +29,7 @@ namespace RulesEngine.Models
                 // if the value can also be turned into an ExpandoObject, then do it!
                 if (kvp.Value is IDictionary<string, object>)
                 {
-                    var expandoValue = ((IDictionary<string, object>)kvp.Value).ToExpando();
+                    var expandoValue = ((IDictionary<string, object>)kvp.Value).ToExpando<T>();
                     expandoDic.Add(kvp.Key, expandoValue);
                 }
                 else if (kvp.Value is ICollection)
@@ -41,7 +41,7 @@ namespace RulesEngine.Models
                     {
                         if (item is IDictionary<string, object>)
                         {
-                            var expandoItem = ((IDictionary<string, object>)item).ToExpando();
+                            var expandoItem = ((IDictionary<string, object>)item).ToExpando<T>();
                             itemList.Add(expandoItem);
                         }
                         else
@@ -61,17 +61,14 @@ namespace RulesEngine.Models
             return expando;
         }
 
-        public static ExpandoObject ToExpando(this object obj)
+        public static ExpandoObject ToExpando<T>(this object obj) where T : RuleParameter
         {
-            // Null-check
             Dictionary<string, object> expando = new Dictionary<string, object>();
 
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(obj.GetType()))
-            {
                 expando.Add(property.Name, property.GetValue(obj));
-            }
-
-            return expando.ToExpando();
+            
+            return expando.ToExpando<T>();
         }
     }
 
@@ -84,7 +81,7 @@ namespace RulesEngine.Models
             Init(name, Value?.GetType());
         }
        
-        internal RuleParameter(string name, Type type,object value = null)
+        public RuleParameter(string name, Type type, object value = null)
         {
             Value = Utils.GetTypedObject(value);
             Init(name, type);

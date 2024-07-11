@@ -55,9 +55,9 @@ public class Actions : IDemo
 
         dynamic input1 = new ExpandoObject();
         input1.Total = 1.5m;
-        var inputs = new RuleParameter[] { new ("input1", input1) };
+        var inputs = new RuleParameter[] { new RuleParameter("input1", input1) };
 
-        ExpandoObject data = inputs[0].Value.ToExpando();
+        ExpandoObject data = inputs[0].Value.ToExpando<RuleParameter>();
 
         //var inputs = new RuleParameter[] { new ("input1", new {count = 1})};
         //DynamicClass dc = inputs[0].Value as DynamicClass;
