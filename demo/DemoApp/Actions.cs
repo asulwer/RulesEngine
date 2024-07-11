@@ -23,12 +23,12 @@ public class Actions : IDemo
                 WorkflowName = "Test Workflow1",
                 Rules = new List<Rule> {
                     new() {
-                        RuleName = "Test Rule",
-                        Expression = "1 == 1",
+                        RuleName = "GiveDiscount10Percent",
+                        Expression = "input1.Total <= 1.5",
                         Actions = new RuleActions {
                             OnSuccess = new ActionInfo {
                                 Name = "OutputExpression",
-                                Context = new Dictionary<string, object> {{"expression", "count > 3"}}
+                                Context = new Dictionary<string, object> {{"Expression", "input1.Total * 1.1"}}
                             }
                         }
                     }
@@ -38,12 +38,12 @@ public class Actions : IDemo
                 WorkflowName = "Test Workflow2",
                 Rules = new List<Rule> {
                     new() {
-                        RuleName = "Test Rule",
-                        Expression = "1 == 1",
+                        RuleName = "GiveDiscount20Percent",
+                        Expression = "input1.Total > 1.5",
                         Actions = new RuleActions {
                             OnSuccess = new ActionInfo {
                                 Name = "OutputExpression",
-                                Context = new Dictionary<string, object> {{"expression", "count < 3"}}
+                                Context = new Dictionary<string, object> {{"Expression", "input1.Total * 1.2" } }
                             }
                         }
                     }
@@ -54,7 +54,7 @@ public class Actions : IDemo
         var bre = new RulesEngine.RulesEngine(workflows);
 
         dynamic input1 = new ExpandoObject();
-        input1.count = 1;
+        input1.Total = 1.5m;
         var inputs = new RuleParameter[] { new ("input1", input1) };
         
         //var inputs = new RuleParameter[] { new ("input1", new {count = 1})};
@@ -64,21 +64,13 @@ public class Actions : IDemo
 
         foreach (var workflow in workflows)
         {
-            var ret = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, inputs, cancellationToken);
+            var rrList = await bre.ExecuteAllRulesAsync(workflow.WorkflowName, inputs, cancellationToken);
 
-            //Different ways to show test results:
-            var outcome = ret.TrueForAll(r => r.IsSuccess);
-
-            ret.OnSuccess(eventName => {
-                Console.WriteLine($"Result '{eventName}' is as expected.");
-                outcome = true;
-            });
-
-            ret.OnFail(() => {
-                outcome = false;
-            });
-
-            Console.WriteLine($"Test outcome: {outcome}.");
+            foreach (var rr in rrList)
+            {
+                if (rr.IsSuccess && rr.ActionResult != null)
+                    Console.WriteLine($"{rr.Rule.RuleName} : {rr.ActionResult.Output}");
+            }
         }
     }
 }
