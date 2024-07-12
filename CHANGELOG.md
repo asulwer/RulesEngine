@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+### Changelog
+
+# CHANGELOG
+
+All notable changes to this project will be documented in this file.
+
+## [6.0.1]
+
+### Added
+- **Preserve Original Object**: Introduced `OriginalValue` property in `RuleParameter` to preserve the original `Expando` without converting its type.
+- **TryGetPropertyValue Method**: Implemented `TryGetPropertyValue` to safely access properties, returning a boolean indicating success and setting the out parameter to the property value or `null` if not found.
+
+### Fixed
+- **Data Integrity Issue**: Ensured both the original dynamic object and the typed version are accessible, maintaining data integrity throughout the workflow execution.
+
+For more details, refer to the [GitHub issue](https://github.com/asulwer/RulesEngine/issues/53).
+
 ## [6.0.0]
 
 - **GitHub Actions**
