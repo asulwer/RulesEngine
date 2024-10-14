@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
-## [6.0.2]
+## [6.0.2] [6.0.4] [6.0.5]
 
 - Updated dependencies to latest
 
