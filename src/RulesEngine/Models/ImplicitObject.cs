@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace RulesEngine.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ImplicitObject
     {
         #region Implicit Operators
@@ -53,6 +56,5 @@ namespace RulesEngine.Models
         }
 
         #endregion
-
     }
 }
