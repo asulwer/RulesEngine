@@ -9,6 +9,8 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text.Json;
 
+using RulesEngine.Models;
+
 namespace RulesEngine.HelperFunctions
 {
     public static class Utils
@@ -51,7 +53,7 @@ namespace RulesEngine.HelperFunctions
                     {
                         if (list.Count == 0)
                         {
-                            value = typeof(List<object>);
+                            value = typeof(List<Dictionary<string, ImplicitObject>>);
                         }
                         else
                         {
