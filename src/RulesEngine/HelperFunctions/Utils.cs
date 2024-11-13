@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using RulesEngine.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace RulesEngine.HelperFunctions
                     {
                         if (list.Count == 0)
                         {
-                            value = typeof(List<object>);
+                            value = typeof(List<Dictionary<string, ImplicitObject>>);
                         }
                         else
                         {
@@ -108,6 +109,10 @@ namespace RulesEngine.HelperFunctions
                             var child = CreateObject(internalType, temp[i]);
                             newList.Add(child);
                         };
+                        if(newList.Count == 0)
+                        {
+                            newList = new List<Dictionary<string, ImplicitObject>>();
+                        }
                         val = newList;
                     }
                     else if (expando.Value is JsonElement expandoElement)
