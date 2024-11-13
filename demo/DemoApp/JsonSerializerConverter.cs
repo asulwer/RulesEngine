@@ -5,6 +5,7 @@
 
 using RulesEngine.HelperFunctions;
 using RulesEngine.Models;
+using RulesEngine.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
