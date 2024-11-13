@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using RulesEngine.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +8,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text.Json;
+
+using RulesEngine.Models;
 
 namespace RulesEngine.HelperFunctions
 {
