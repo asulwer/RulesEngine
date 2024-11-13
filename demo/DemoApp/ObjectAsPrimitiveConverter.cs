@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+// https://github.com/asulwer/RulesEngine/issues/75
+// https://stackoverflow.com/questions/65972825/c-sharp-deserializing-nested-json-to-nested-dictionarystring-object
 
 using System;
 using System.Collections.Generic;
