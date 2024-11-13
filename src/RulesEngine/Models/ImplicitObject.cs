@@ -29,6 +29,10 @@ namespace RulesEngine.Models
 
         public static implicit operator ImplicitObject(decimal? value) => default;
 
+        public static implicit operator ImplicitObject(float value) => default;
+
+        public static implicit operator ImplicitObject(float? value) => default;
+
         #endregion
 
     }
