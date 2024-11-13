@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Newtonsoft.Json.Linq;
-using RulesEngine.HelperFunctions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -10,6 +9,10 @@ using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using Xunit;
+
+using RulesEngine.HelperFunctions;
+using RulesEngine.Serialization;
+using RulesEngine.Models;
 
 namespace RulesEngine.UnitTest
 {
@@ -160,6 +163,26 @@ namespace RulesEngine.UnitTest
             Assert.Equal(100L, scores[0]);
             Assert.Equal(95.7, scores[1]);
             Assert.Equal(85L, scores[2]);
+        }
+
+        [Fact]
+        public void CreateObject_WithEmptyArray_ShouldConvertToListDictionaryImplicitObject()
+        {
+            var jsonString = @"{""things"":[]}";
+
+            var options = new JsonSerializerOptions {
+                Converters = { new ObjectAsPrimitiveConverter() },
+                WriteIndented = true,
+            };
+
+            var document = JsonSerializer.Deserialize<ExpandoObject>(jsonString, options);
+
+            var type = Utils.CreateAbstractClassType(document);
+            dynamic result = Utils.CreateObject(type, document);
+
+            Assert.IsType<List<Dictionary<string, ImplicitObject>>>(result.things);
+            Assert.Empty((List<Dictionary<string, ImplicitObject>>)result.things);
+            
         }
     }
 }
