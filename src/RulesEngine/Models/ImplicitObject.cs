@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+// https://github.com/asulwer/RulesEngine/issues/75
+
+using System.Diagnostics.CodeAnalysis;
 
 using System.Diagnostics.CodeAnalysis;
 
