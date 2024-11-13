@@ -109,10 +109,6 @@ namespace RulesEngine.HelperFunctions
                             var child = CreateObject(internalType, temp[i]);
                             newList.Add(child);
                         };
-                        if(newList.Count == 0)
-                        {
-                            newList = new List<Dictionary<string, ImplicitObject>>();
-                        }
                         val = newList;
                     }
                     else if (expando.Value is JsonElement expandoElement)
