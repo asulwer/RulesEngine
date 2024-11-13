@@ -7,6 +7,26 @@ namespace RulesEngine.Models
     {
         #region Implicit Operators
 
+        public static implicit operator ImplicitObject(bool value)
+        {
+            return default;
+        }
+
+        public static implicit operator ImplicitObject(bool? value)
+        {
+            return default;
+        }
+
+        public static implicit operator ImplicitObject(char value)
+        {
+            return default;
+        }
+
+        public static implicit operator ImplicitObject(char? value)
+        {
+            return default;
+        }
+
         public static implicit operator ImplicitObject(string value)
         {
             return default;
