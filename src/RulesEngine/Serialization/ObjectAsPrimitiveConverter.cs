@@ -5,12 +5,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RulesEngine.Serialization
 {
+    [ExcludeFromCodeCoverage]
     public class ObjectAsPrimitiveConverter : JsonConverter<object>
     {
         
