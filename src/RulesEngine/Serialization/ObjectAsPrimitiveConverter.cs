@@ -72,10 +72,7 @@ namespace RulesEngine.Serialization
                             return m;
                         else if (floatFormat == FloatFormat.Double && reader.TryGetDouble(out var d))
                             return d;
-                        using var doc = JsonDocument.ParseValue(ref reader);
-                        if (unknownNumberFormat == UnknownNumberFormat.JsonElement)
-                            return doc.RootElement.Clone();
-                        throw new JsonException(string.Format("Cannot parse number {0}", doc.RootElement.ToString()));
+                        throw new JsonException(string.Format("Cannot parse number {0}", reader.GetString()));
                     }
                 case JsonTokenType.StartArray:
                     {
