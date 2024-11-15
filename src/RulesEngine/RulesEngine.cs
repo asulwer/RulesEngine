@@ -459,10 +459,12 @@ namespace RulesEngine
 
             if (model != null)
             {
-                using var jDoc = JsonSerializer.SerializeToDocument(model);
-                errorMessage = jDoc.RootElement.TryGetProperty(propertyName, out var jElement) ? 
-                    errorMessage.Replace($"$({property})", jElement.GetRawText() ?? $"({property})") : 
-                    errorMessage.Replace($"$({property})", $"({property})");
+                using (var jDoc = JsonSerializer.SerializeToDocument(model))
+                {
+                    errorMessage = jDoc.RootElement.TryGetProperty(propertyName, out var jElement) ?
+                        errorMessage.Replace($"$({property})", jElement.GetRawText() ?? $"({property})") :
+                        errorMessage.Replace($"$({property})", $"({property})");
+                }
             }
 
             return errorMessage;

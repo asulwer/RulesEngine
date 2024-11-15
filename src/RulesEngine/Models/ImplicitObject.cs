@@ -4,16 +4,11 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace RulesEngine.Models
 {
     [ExcludeFromCodeCoverage]
     public class ImplicitObject
     {
-
-        #region Implicit Operators
-
         public static implicit operator ImplicitObject(bool value) => default;
 
         public static implicit operator ImplicitObject(bool? value) => default;
@@ -35,8 +30,5 @@ namespace RulesEngine.Models
         public static implicit operator ImplicitObject(float value) => default;
 
         public static implicit operator ImplicitObject(float? value) => default;
-
-        #endregion
-
     }
 }

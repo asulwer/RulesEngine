@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using RulesEngine.HelperFunctions;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 

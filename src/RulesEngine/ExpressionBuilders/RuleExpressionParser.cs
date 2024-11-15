@@ -2,7 +2,6 @@
 //  Licensed under the MIT License.
 
 using FastExpressionCompiler;
-using RulesEngine.HelperFunctions;
 using RulesEngine.Models;
 using System;
 using System.Collections.Generic;
