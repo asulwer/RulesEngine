@@ -44,14 +44,14 @@ namespace RulesEngine.UnitTest
                 Assert.All(andResults,
                     c => {
                         Assert.Equal(c.IsSuccess, c.ChildResults.Last().IsSuccess);
-                        Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
+                        Assert.Single(c.ChildResults, d => c.IsSuccess == d.IsSuccess);
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == true));
                     });
 
                 Assert.All(orResults,
                     c => {
                         Assert.Equal(c.IsSuccess, c.ChildResults.Last().IsSuccess);
-                        Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
+                        Assert.Single(c.ChildResults, d => c.IsSuccess == d.IsSuccess);
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == false));
                     });
             }
@@ -240,14 +240,14 @@ namespace RulesEngine.UnitTest
                 Assert.All(andResults,
                     c => {
                         Assert.Equal(c.IsSuccess, c.ChildResults.Last().IsSuccess);
-                        Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
+                        Assert.Single(c.ChildResults, d => c.IsSuccess == d.IsSuccess);
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == true));
                     });
 
                 Assert.All(orResults,
                     c => {
                         Assert.Equal(c.IsSuccess, c.ChildResults.Last().IsSuccess);
-                        Assert.Single(c.ChildResults.Where(d => c.IsSuccess == d.IsSuccess));
+                        Assert.Single(c.ChildResults, d => c.IsSuccess == d.IsSuccess);
                         Assert.True(c.ChildResults.SkipLast(1).All(d => d.IsSuccess == false));
                     });
             }
