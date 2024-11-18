@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.6]
+
+- Updated dependencies to latest
+- Resolves the following issues [75](https://github.com/asulwer/RulesEngine/issues/75) & [90](https://github.com/asulwer/RulesEngine/issues/90)
+  - [Deserializing](https://learn.microsoft.com/en-us/dotnet/api/system.text.json) Json (includes an empty array) to ExpandoObject
+- targeting `netstandard2.0` & `netstandard2.1`
+ 
 ## [6.0.2] [6.0.4] [6.0.5]
 
 - Updated dependencies to latest
