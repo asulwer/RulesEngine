@@ -25,9 +25,32 @@ namespace RulesEngine.UnitTest
                     WorkflowName = "Workflow",
                     Rules = [
                         new() {
-                            RuleName = "empty array",
-                            Expression = "not things.Any(a == 3)",
-                            RuleExpressionType = RuleExpressionType.LambdaExpression
+                            RuleName = "equal string",
+                            Expression = "not things.Any(a == \"widget\")"
+                        },
+                        new() {
+                            RuleName = "equal integer",
+                            Expression = "not things.Any(a == 3)"
+                        },
+                        new() {
+                            RuleName = "not equal integer",
+                            Expression = "not things.Any(a != 3)"
+                        },
+                        new() {
+                            RuleName = "greater than integer",
+                            Expression = "not things.Any(a > 3)"
+                        },
+                        new() {
+                            RuleName = "less than integer",
+                            Expression = "not things.Any(a < 3)"
+                        },
+                        new() {
+                            RuleName = "greater than equal to integer",
+                            Expression = "not things.Any(a >= 3)"
+                        },
+                        new() {
+                            RuleName = "less than equal to integer",
+                            Expression = "not things.Any(a <= 3)"
                         }
                     ]
                 }
@@ -50,12 +73,14 @@ namespace RulesEngine.UnitTest
             CancellationTokenSource cancellationTokenSource = new();
             List<RuleResultTree> results = await rulesEngine.ExecuteAllRulesAsync("Workflow", cancellationTokenSource.Token, target);
 
-            Assert.Single(results);
+            Assert.True(results.TrueForAll(r => r.IsSuccess));
 
-            var result = results[0];
+            foreach (var result in results)
+            {
+                Assert.Equal(result.ExceptionMessage, string.Empty);
+                Assert.True(result.IsSuccess);
+            }
 
-            Assert.Equal(result.ExceptionMessage, string.Empty);
-            Assert.True(result.IsSuccess);
 
         }
 
