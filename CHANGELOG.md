@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.8]
+## What's Changed
+* Bump dotnet-reportgenerator-globaltool from 5.4.1 to 5.4.3 by @dependabot in https://github.com/asulwer/RulesEngine/pull/98
+* Bump System.Text.Json from 9.0.0 to 9.0.1 by @dependabot in https://github.com/asulwer/RulesEngine/pull/100
+* Bump Microsoft.EntityFrameworkCore from 9.0.0 to 9.0.1 by @dependabot in https://github.com/asulwer/RulesEngine/pull/102
+* Bump coverallsapp/github-action from 2.3.4 to 2.3.6 by @dependabot in https://github.com/asulwer/RulesEngine/pull/101
+* manually updated nuget packages by @asulwer in https://github.com/asulwer/RulesEngine/pull/104
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.7...v6.0.8
+
 ## [6.0.7]
 
 - Updated dependencies to latest
