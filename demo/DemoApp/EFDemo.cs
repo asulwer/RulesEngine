@@ -30,7 +30,7 @@ public class EFDemo : IDemo
 
         var inputs = new[] { input1, input2, input3 };
 
-        var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "Discount.json", SearchOption.AllDirectories);
+        var files = Directory.GetFiles(Directory.GetCurrentDirectory(), "Workflows\\Discount.json", SearchOption.AllDirectories);
         if (files == null || files.Length == 0)
         {
             throw new FileNotFoundException("Rules not found.");
@@ -55,17 +55,20 @@ public class EFDemo : IDemo
 
         var discountOffered = "No discount offered.";
 
-        var resultList = await bre.ExecuteAllRulesAsync("Discount", cancellationToken, inputs);
+        foreach (var wf in workflows)
+        {
+            var ret = await bre.ExecuteAllRulesAsync(wf.WorkflowName, cancellationToken, inputs);
 
-        resultList.OnSuccess(eventName => {
-            discountOffered = $"Discount offered is {eventName} % over MRP.";
-        });
+            ret.OnSuccess(eventName => {
+                discountOffered = $"Discount offered is {eventName} % over MRP.";
+            });
 
-        resultList.OnFail(() => {
-            discountOffered = "The user is not eligible for any discount.";
-        });
+            ret.OnFail(() => {
+                discountOffered = "The user is not eligible for any discount.";
+            });
 
-        Console.WriteLine(discountOffered);
+            Console.WriteLine(discountOffered);
+        }
     }
 }
 

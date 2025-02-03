@@ -24,7 +24,7 @@ public class Basic : IDemo
                         RuleName = "Test Rule",
                         SuccessEvent = "Count is within tolerance",
                         ErrorMessage = "Over expected",
-                        Expression = "count < 3"
+                        Expression = "count >= 0 AND count <= 3"
                     }
                 }
             }
