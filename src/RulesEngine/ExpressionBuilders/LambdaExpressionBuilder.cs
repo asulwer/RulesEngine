@@ -33,8 +33,7 @@ namespace RulesEngine.ExpressionBuilders
             {
                 Helpers.HandleRuleException(ex,rule,_reSettings);
 
-                var exceptionMessage = Helpers.GetExceptionMessage($"Exception while parsing expression `{rule?.Expression}` - {ex.Message}",
-                                                                    _reSettings);
+                var exceptionMessage = Helpers.GetExceptionMessage($"Exception while parsing expression `{rule?.Expression}` - {ex.Message}", _reSettings);
 
                 bool func(object[] param) => false;
                 
