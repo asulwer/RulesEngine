@@ -10,7 +10,7 @@ namespace RulesEngine.Actions
 {
     public abstract class ActionBase
     {
-        internal async virtual ValueTask<ActionRuleResult> ExecuteAndReturnResultAsync(ActionContext context, RuleParameter[] ruleParameters, bool includeRuleResults = false)
+        internal async virtual ValueTask<ActionRuleResult> ExecuteAndReturnResultAsync(ActionContext context, RuleParameter[] ruleParameters, ReSettings reSettings, bool includeRuleResults = false)
         {
             var result = new ActionRuleResult();
             try
@@ -19,7 +19,10 @@ namespace RulesEngine.Actions
             }
             catch (Exception ex)
             {
-                result.Exception = new Exception($"Exception while executing {GetType().Name}: {ex.Message}", ex);
+                if (!reSettings.IgnoreException && reSettings.EnableExceptionAsErrorMessage)
+                    result.Exception = new Exception($"Exception while executing {GetType().Name}: {ex.Message}", ex);
+                else if(!reSettings.IgnoreException && !reSettings.EnableExceptionAsErrorMessage)
+                    throw ex;
             }
             finally
             {
