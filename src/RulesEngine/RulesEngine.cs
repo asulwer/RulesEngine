@@ -244,9 +244,8 @@ namespace RulesEngine
             foreach (var ruleResult in ruleResultList)
             {
                 if (ruleResult.ChildResults != null)
-                {
                     await ExecuteActionAsync(ruleResult.ChildResults);
-                }
+                
                 var actionResult = await ExecuteActionForRuleResult(ruleResult, false, cancellationToken);
                 ruleResult.ActionResult = new ActionResult {
                     Output = actionResult.Output,
@@ -264,7 +263,7 @@ namespace RulesEngine
             {
                 var action = _actionFactory.Get(actionInfo.Name);
                 var ruleParameters = resultTree.Inputs.Select(kv => new RuleParameter(kv.Key, kv.Value)).ToArray();
-                return await action.ExecuteAndReturnResultAsync(new ActionContext(actionInfo.Context, resultTree, cancellationToken), ruleParameters, includeRuleResults);
+                return await action.ExecuteAndReturnResultAsync(new ActionContext(actionInfo.Context, resultTree, cancellationToken), ruleParameters, _reSettings, includeRuleResults);
             }
             else
             {
