@@ -8,7 +8,21 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.9]
+
+## What's Changed
+* Bump xunit.runner.visualstudio from 3.0.1 to 3.0.2 by @dependabot in https://github.com/asulwer/RulesEngine/pull/105
+* Bump dotnet-reportgenerator-globaltool from 5.4.3 to 5.4.4 by @dependabot in https://github.com/asulwer/RulesEngine/pull/106
+* Bump Microsoft.NET.Test.Sdk from 17.12.0 to 17.13.0 by @dependabot in https://github.com/asulwer/RulesEngine/pull/107
+* Bump Microsoft.EntityFrameworkCore and Microsoft.EntityFrameworkCore.Sqlite by @dependabot in https://github.com/asulwer/RulesEngine/pull/108
+* Bump System.Linq.Dynamic.Core from 1.6.0.1 to 1.6.0.2 by @dependabot in https://github.com/asulwer/RulesEngine/pull/110
+* Bump Microsoft.EntityFrameworkCore from 9.0.2 to 9.0.3 by @dependabot in https://github.com/asulwer/RulesEngine/pull/111
+* Exception handling in Actions by @asulwer in https://github.com/asulwer/RulesEngine/pull/112
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.8...v6.0.9
+ 
 ## [6.0.8]
+
 ## What's Changed
 * Bump dotnet-reportgenerator-globaltool from 5.4.1 to 5.4.3 by @dependabot in https://github.com/asulwer/RulesEngine/pull/98
 * Bump System.Text.Json from 9.0.0 to 9.0.1 by @dependabot in https://github.com/asulwer/RulesEngine/pull/100
