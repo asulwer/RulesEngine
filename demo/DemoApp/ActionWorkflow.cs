@@ -28,21 +28,6 @@ namespace DemoApp
                             }
                         }
                     }
-                },
-                new() {
-                    WorkflowName = "Test Workflow4",
-                    Rules = new List<Rule> {
-                        new() {
-                            RuleName = "Test Rule",
-                            Expression = "1==1", //not used when Actions are being used
-                            Actions = new RuleActions {
-                                OnSuccess = new ActionInfo {
-                                    Name = "OutputExpression",
-                                    Context = new Dictionary<string, object> {{"expression", "counts"}}
-                                }
-                            }
-                        }
-                    }
                 }
             };
 
