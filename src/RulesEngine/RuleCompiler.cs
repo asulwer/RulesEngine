@@ -3,6 +3,7 @@
 
 using RulesEngine.Exceptions;
 using RulesEngine.ExpressionBuilders;
+using RulesEngine.Extensions;
 using RulesEngine.HelperFunctions;
 using RulesEngine.Models;
 using System;
@@ -58,7 +59,7 @@ namespace RulesEngine
             {
                 var globalParamExp = globalParams.Value;
                 var extendedRuleParams = ruleParams.Concat(globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)))
-                                                   .ToArray();
+                                                   .DistinctBy(x=>x.Name).ToArray();
                 var ruleExpression = GetDelegateForRule(rule, extendedRuleParams);
 
 
@@ -258,7 +259,7 @@ namespace RulesEngine
                     return resultFn(ruleParams);
                 }
 
-                var extendedInputs = ruleParams.Concat(scopedParams);
+                var extendedInputs = ruleParams.Concat(scopedParams).DistinctBy(x=>x.Name);
                 var result = ruleFunc(extendedInputs.ToArray());
                 return result;
             };
