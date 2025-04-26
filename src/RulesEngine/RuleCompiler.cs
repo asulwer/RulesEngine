@@ -47,28 +47,68 @@ namespace RulesEngine
         /// <param name="input"></param>
         /// <param name="ruleParam"></param>
         /// <returns>Compiled func delegate</returns>
-        internal RuleFunc<RuleResultTree> CompileRule(Rule rule, RuleExpressionType ruleExpressionType, RuleParameter[] ruleParams, Lazy<RuleExpressionParameter[]> globalParams)
+        internal RuleFunc<RuleResultTree> CompileRule(
+            Rule rule,
+            RuleExpressionType ruleExpressionType,
+            RuleParameter[] ruleParams,
+            Lazy<RuleExpressionParameter[]> globalParams)
         {
             if (rule == null)
             {
-                var ex =  new ArgumentNullException(nameof(rule));
-                throw ex;
+                throw new ArgumentNullException(nameof(rule));
             }
+
             try
             {
                 var globalParamExp = globalParams.Value;
-                var extendedRuleParams = ruleParams.Concat(globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name,c.ParameterExpression.Type)))
-                                                   .ToArray();
-                var ruleExpression = GetDelegateForRule(rule, extendedRuleParams);
-                
 
-                return GetWrappedRuleFunc(rule,ruleExpression,ruleParams,globalParamExp);
+                var extendedRuleParams = MergeRuleParameters(ruleParams, globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)));
+
+                var ruleExpression = GetDelegateForRule(rule, extendedRuleParams);
+
+                return GetWrappedRuleFunc(rule, ruleExpression, ruleParams, globalParamExp);
             }
             catch (Exception ex)
             {
-                var message = $"Error while compiling rule `{rule.RuleName}`: {ex.Message}";
+                var message = $"Error while compiling rule `{rule?.RuleName}`: {ex.Message}";
                 return Helpers.ToRuleExceptionResult(_reSettings, rule, new RuleException(message, ex));
             }
+        }
+
+
+        /// <summary>
+        /// Merges parameters into a single array, ensuring no duplicate parameter names.
+        /// If a duplicate name exists, the parameter from first array is preferred.
+        /// </summary>
+        /// <param name="paramOne">The array of paramOne defined parameters.</param>
+        /// <param name="paramTwo">The array of paramTwo defined parameters.</param>
+        /// <returns>An array of merged <see cref="RuleParameter"/> objects without duplicates by name.</returns>
+        private static RuleParameter[] MergeRuleParameters(
+            IEnumerable<RuleParameter> paramOne,
+            IEnumerable<RuleParameter> paramTwo)
+        {
+            var paramDict = new Dictionary<string, RuleParameter>(StringComparer.Ordinal);
+
+            foreach (var param in paramOne)
+            {
+                paramDict[param.Name] = param;
+            }
+
+            foreach (var globalParam in paramTwo)
+            {
+                var param = new RuleParameter(globalParam.ParameterExpression.Name, globalParam.ParameterExpression.Type);
+                if (!paramDict.ContainsKey(param.Name))
+                {
+                    paramDict[param.Name] = param;
+                }
+                // If you prefer strict mode (throw on duplicates), replace with:
+                // else
+                // {
+                //     throw new InvalidOperationException($"Duplicate parameter name detected: {param.Name}");
+                // }
+            }
+
+            return paramDict.Values.ToArray();
         }
 
 
@@ -84,8 +124,7 @@ namespace RulesEngine
         {
             var scopedParamList = GetRuleExpressionParameters(rule.RuleExpressionType, rule?.LocalParams, ruleParams);
 
-            var extendedRuleParams = ruleParams.Concat(scopedParamList.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)))
-                                               .ToArray();
+            var extendedRuleParams = MergeRuleParameters(ruleParams, scopedParamList.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)));
 
             RuleFunc<RuleResultTree> ruleFn;
             
@@ -257,8 +296,8 @@ namespace RulesEngine
                     var resultFn = Helpers.ToRuleExceptionResult(_reSettings, rule, new RuleException(message, ex));
                     return resultFn(ruleParams);
                 }
-               
-                var extendedInputs = ruleParams.Concat(scopedParams);
+
+                var extendedInputs = MergeRuleParameters(ruleParams, scopedParams);
                 var result = ruleFunc(extendedInputs.ToArray());
                 return result;
             };
