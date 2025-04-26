@@ -103,7 +103,7 @@ namespace RulesEngine
             return GetWrappedRuleFunc(rule, ruleFn, ruleParams, scopedParamList);
         }
 
-        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType,IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
+        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType, IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
         {
             if(!_reSettings.EnableScopedParams)
             {
@@ -113,23 +113,28 @@ namespace RulesEngine
 
             if (localParams?.Any() == true)
             {
-
-                var parameters = ruleParams.Select(c => c.ParameterExpression)
-                                            .ToList();
+                var parameters = ruleParams.Select(c => c.ParameterExpression).ToList();
+                var parameterNames = new HashSet<string>(parameters.Select(p => p.Name));
 
                 var expressionBuilder = GetExpressionBuilder(ruleExpressionType);
+                var parametersArray = parameters.ToArray();
 
                 foreach (var lp in localParams)
                 {
                     try
                     {
-                        var lpExpression = expressionBuilder.Parse(lp.Expression, parameters.ToArray(), null);
-                        var ruleExpParam = new RuleExpressionParameter() {
+                        if (!parameterNames.Add(lp.Name)) continue;
+
+                        var lpExpression = expressionBuilder.Parse(lp.Expression, parametersArray, null);
+
+                        var ruleExpParam = new RuleExpressionParameter {
                             ParameterExpression = Expression.Parameter(lpExpression.Type, lp.Name),
                             ValueExpression = lpExpression
                         };
                         parameters.Add(ruleExpParam.ParameterExpression);
                         ruleExpParams.Add(ruleExpParam);
+
+                        parametersArray = parameters.ToArray();
                     }
                     catch(Exception ex)
                     {
