@@ -860,7 +860,7 @@ namespace RulesEngine.UnitTest
 
         [Theory]
         [InlineData("rules13.json")]
-        public async Task ExecuteActionWorkflowAsync_WithActionDefinition_ShouldNotDuplicateGlobalParameters(string ruleFileName)
+        public async Task ExecuteActionWorkflowAsync_ShouldNotDuplicateInputs_WhenGlobalParamsExist(string ruleFileName)
         {
             var re = GetRulesEngine(ruleFileName);
 
