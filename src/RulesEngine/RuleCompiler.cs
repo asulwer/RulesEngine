@@ -103,7 +103,7 @@ namespace RulesEngine
             return GetWrappedRuleFunc(rule, ruleFn, ruleParams, scopedParamList);
         }
 
-        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType, IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
+        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType,IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
         {
             if(!_reSettings.EnableScopedParams)
             {
