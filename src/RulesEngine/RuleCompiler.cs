@@ -47,68 +47,28 @@ namespace RulesEngine
         /// <param name="input"></param>
         /// <param name="ruleParam"></param>
         /// <returns>Compiled func delegate</returns>
-        internal RuleFunc<RuleResultTree> CompileRule(
-            Rule rule,
-            RuleExpressionType ruleExpressionType,
-            RuleParameter[] ruleParams,
-            Lazy<RuleExpressionParameter[]> globalParams)
+        internal RuleFunc<RuleResultTree> CompileRule(Rule rule, RuleExpressionType ruleExpressionType, RuleParameter[] ruleParams, Lazy<RuleExpressionParameter[]> globalParams)
         {
             if (rule == null)
             {
-                throw new ArgumentNullException(nameof(rule));
+                var ex = new ArgumentNullException(nameof(rule));
+                throw ex;
             }
-
             try
             {
                 var globalParamExp = globalParams.Value;
-
-                var extendedRuleParams = MergeRuleParameters(ruleParams, globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)));
-
+                var extendedRuleParams = ruleParams.Concat(globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)))
+                                                   .ToArray();
                 var ruleExpression = GetDelegateForRule(rule, extendedRuleParams);
+
 
                 return GetWrappedRuleFunc(rule, ruleExpression, ruleParams, globalParamExp);
             }
             catch (Exception ex)
             {
-                var message = $"Error while compiling rule `{rule?.RuleName}`: {ex.Message}";
+                var message = $"Error while compiling rule `{rule.RuleName}`: {ex.Message}";
                 return Helpers.ToRuleExceptionResult(_reSettings, rule, new RuleException(message, ex));
             }
-        }
-
-
-        /// <summary>
-        /// Merges parameters into a single array, ensuring no duplicate parameter names.
-        /// If a duplicate name exists, the parameter from first array is preferred.
-        /// </summary>
-        /// <param name="paramOne">The array of paramOne defined parameters.</param>
-        /// <param name="paramTwo">The array of paramTwo defined parameters.</param>
-        /// <returns>An array of merged <see cref="RuleParameter"/> objects without duplicates by name.</returns>
-        private static RuleParameter[] MergeRuleParameters(
-            IEnumerable<RuleParameter> paramOne,
-            IEnumerable<RuleParameter> paramTwo)
-        {
-            var paramDict = new Dictionary<string, RuleParameter>(StringComparer.Ordinal);
-
-            foreach (var param in paramOne)
-            {
-                paramDict[param.Name] = param;
-            }
-
-            foreach (var globalParam in paramTwo)
-            {
-                var param = new RuleParameter(globalParam.ParameterExpression.Name, globalParam.ParameterExpression.Type);
-                if (!paramDict.ContainsKey(param.Name))
-                {
-                    paramDict[param.Name] = param;
-                }
-                // If you prefer strict mode (throw on duplicates), replace with:
-                // else
-                // {
-                //     throw new InvalidOperationException($"Duplicate parameter name detected: {param.Name}");
-                // }
-            }
-
-            return paramDict.Values.ToArray();
         }
 
 
@@ -124,10 +84,11 @@ namespace RulesEngine
         {
             var scopedParamList = GetRuleExpressionParameters(rule.RuleExpressionType, rule?.LocalParams, ruleParams);
 
-            var extendedRuleParams = MergeRuleParameters(ruleParams, scopedParamList.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)));
+            var extendedRuleParams = ruleParams.Concat(scopedParamList.Select(c => new RuleParameter(c.ParameterExpression.Name, c.ParameterExpression.Type)))
+                                               .ToArray();
 
             RuleFunc<RuleResultTree> ruleFn;
-            
+
             if (Enum.TryParse(rule.Operator, out ExpressionType nestedOperator) && nestedOperators.Contains(nestedOperator) &&
                 rule.Rules != null && rule.Rules.Any())
             {
@@ -141,9 +102,9 @@ namespace RulesEngine
             return GetWrappedRuleFunc(rule, ruleFn, ruleParams, scopedParamList);
         }
 
-        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType,IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
+        internal RuleExpressionParameter[] GetRuleExpressionParameters(RuleExpressionType ruleExpressionType, IEnumerable<ScopedParam> localParams, RuleParameter[] ruleParams)
         {
-            if(!_reSettings.EnableScopedParams)
+            if (!_reSettings.EnableScopedParams)
             {
                 return new RuleExpressionParameter[] { };
             }
@@ -169,7 +130,7 @@ namespace RulesEngine
                         parameters.Add(ruleExpParam.ParameterExpression);
                         ruleExpParams.Add(ruleExpParam);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         var message = $"{ex.Message}, in ScopedParam: {lp.Name}";
                         throw new RuleException(message);
@@ -224,22 +185,22 @@ namespace RulesEngine
         }
 
 
-        private (bool isSuccess ,IEnumerable<RuleResultTree> result) ApplyOperation(RuleParameter[] paramArray,IEnumerable<RuleFunc<RuleResultTree>> ruleFuncList, ExpressionType operation)
+        private (bool isSuccess, IEnumerable<RuleResultTree> result) ApplyOperation(RuleParameter[] paramArray, IEnumerable<RuleFunc<RuleResultTree>> ruleFuncList, ExpressionType operation)
         {
             if (ruleFuncList?.Any() != true)
             {
-                return (false,new List<RuleResultTree>());
+                return (false, new List<RuleResultTree>());
             }
 
             var resultList = new List<RuleResultTree>();
             var isSuccess = false;
 
-            if(operation == ExpressionType.And || operation == ExpressionType.AndAlso)
+            if (operation == ExpressionType.And || operation == ExpressionType.AndAlso)
             {
                 isSuccess = true;
             }
 
-            foreach(var ruleFunc in ruleFuncList)
+            foreach (var ruleFunc in ruleFuncList)
             {
                 var ruleResult = ruleFunc(paramArray);
                 resultList.Add(ruleResult);
@@ -248,7 +209,7 @@ namespace RulesEngine
                     case ExpressionType.And:
                     case ExpressionType.AndAlso:
                         isSuccess = isSuccess && ruleResult.IsSuccess;
-                        if(_reSettings.NestedRuleExecutionMode ==  NestedRuleExecutionMode.Performance && isSuccess == false)
+                        if (_reSettings.NestedRuleExecutionMode == NestedRuleExecutionMode.Performance && isSuccess == false)
                         {
                             return (isSuccess, resultList);
                         }
@@ -263,24 +224,24 @@ namespace RulesEngine
                         }
                         break;
                 }
-                
+
             }
             return (isSuccess, resultList);
         }
 
-        internal Func<object[],Dictionary<string,object>> CompileScopedParams(RuleExpressionType ruleExpressionType, RuleParameter[] ruleParameters,RuleExpressionParameter[] ruleExpParams)
+        internal Func<object[], Dictionary<string, object>> CompileScopedParams(RuleExpressionType ruleExpressionType, RuleParameter[] ruleParameters, RuleExpressionParameter[] ruleExpParams)
         {
             return GetExpressionBuilder(ruleExpressionType).CompileScopedParams(ruleParameters, ruleExpParams);
 
         }
 
-        private RuleFunc<RuleResultTree> GetWrappedRuleFunc(Rule rule, RuleFunc<RuleResultTree> ruleFunc,RuleParameter[] ruleParameters,RuleExpressionParameter[] ruleExpParams)
+        private RuleFunc<RuleResultTree> GetWrappedRuleFunc(Rule rule, RuleFunc<RuleResultTree> ruleFunc, RuleParameter[] ruleParameters, RuleExpressionParameter[] ruleExpParams)
         {
-            if(ruleExpParams.Length == 0)
+            if (ruleExpParams.Length == 0)
             {
                 return ruleFunc;
             }
-            var paramDelegate = CompileScopedParams(rule.RuleExpressionType,ruleParameters, ruleExpParams);
+            var paramDelegate = CompileScopedParams(rule.RuleExpressionType, ruleParameters, ruleExpParams);
 
             return (ruleParams) => {
                 var inputs = ruleParams.Select(c => c.Value).ToArray();
@@ -290,14 +251,14 @@ namespace RulesEngine
                     var scopedParamsDict = paramDelegate(inputs);
                     scopedParams = scopedParamsDict.Select(c => new RuleParameter(c.Key, c.Value));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     var message = $"Error while executing scoped params for rule `{rule.RuleName}` - {ex}";
                     var resultFn = Helpers.ToRuleExceptionResult(_reSettings, rule, new RuleException(message, ex));
                     return resultFn(ruleParams);
                 }
 
-                var extendedInputs = MergeRuleParameters(ruleParams, scopedParams);
+                var extendedInputs = ruleParams.Concat(scopedParams);
                 var result = ruleFunc(extendedInputs.ToArray());
                 return result;
             };
