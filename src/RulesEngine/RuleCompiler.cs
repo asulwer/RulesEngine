@@ -3,6 +3,7 @@
 
 using RulesEngine.Exceptions;
 using RulesEngine.ExpressionBuilders;
+using RulesEngine.Extensions;
 using RulesEngine.HelperFunctions;
 using RulesEngine.Models;
 using System;
@@ -58,7 +59,7 @@ namespace RulesEngine
             {
                 var globalParamExp = globalParams.Value;
                 var extendedRuleParams = ruleParams.Concat(globalParamExp.Select(c => new RuleParameter(c.ParameterExpression.Name,c.ParameterExpression.Type)))
-                                                   .ToArray();
+                                                   .DistinctBy(x => x.Name).ToArray();
                 var ruleExpression = GetDelegateForRule(rule, extendedRuleParams);
                 
 
@@ -112,23 +113,28 @@ namespace RulesEngine
 
             if (localParams?.Any() == true)
             {
-
-                var parameters = ruleParams.Select(c => c.ParameterExpression)
-                                            .ToList();
+                var parameters = ruleParams.Select(c => c.ParameterExpression).ToList();
+                var parameterNames = new HashSet<string>(parameters.Select(p => p.Name));
 
                 var expressionBuilder = GetExpressionBuilder(ruleExpressionType);
+                var parametersArray = parameters.ToArray();
 
                 foreach (var lp in localParams)
                 {
                     try
                     {
-                        var lpExpression = expressionBuilder.Parse(lp.Expression, parameters.ToArray(), null);
-                        var ruleExpParam = new RuleExpressionParameter() {
+                        if (!parameterNames.Add(lp.Name)) continue;
+
+                        var lpExpression = expressionBuilder.Parse(lp.Expression, parametersArray, null);
+
+                        var ruleExpParam = new RuleExpressionParameter {
                             ParameterExpression = Expression.Parameter(lpExpression.Type, lp.Name),
                             ValueExpression = lpExpression
                         };
                         parameters.Add(ruleExpParam.ParameterExpression);
                         ruleExpParams.Add(ruleExpParam);
+
+                        parametersArray = parameters.ToArray();
                     }
                     catch(Exception ex)
                     {
@@ -258,7 +264,7 @@ namespace RulesEngine
                     return resultFn(ruleParams);
                 }
                
-                var extendedInputs = ruleParams.Concat(scopedParams);
+                var extendedInputs = ruleParams.Concat(scopedParams).DistinctBy(x => x.Name);
                 var result = ruleFunc(extendedInputs.ToArray());
                 return result;
             };

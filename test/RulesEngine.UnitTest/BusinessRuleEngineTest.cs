@@ -857,6 +857,21 @@ namespace RulesEngine.UnitTest
             Assert.IsType<TaskCanceledException>(exception?.InnerException);
         }
 
+
+        [Theory]
+        [InlineData("rules13.json")]
+        public async Task ExecuteActionWorkflowAsync_ShouldNotDuplicateInputs_WhenGlobalParamsExist(string ruleFileName)
+        {
+            var re = GetRulesEngine(ruleFileName);
+
+            var parameter = RuleParameter.Create("person", new { FirstName = "First Name", LastName = "Last Name" });
+            
+            var result = await re.ExecuteActionWorkflowAsync("inputWorkflow", "RulePersonFirstName", new[] { parameter });
+            Assert.NotNull(result.Results);
+            Assert.IsType<List<RuleResultTree>>(result.Results);
+            Assert.All(result.Results, c => Assert.True(c.IsSuccess));
+        }
+
         [Fact]
         public async Task ExecuteRule_RuntimeError_ShouldReturnAsErrorMessage()
         {

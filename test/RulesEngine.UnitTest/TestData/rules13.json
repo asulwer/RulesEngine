@@ -1,0 +1,32 @@
+{
+  "WorkflowName": "inputWorkflow",
+  "GlobalParams": [
+    {
+      "Name": "test",
+      "Expression": "1"
+    }
+  ],
+  "Rules": [
+    {
+      "RuleName": "RulePersonFirstName",
+      "Enabled": true,
+      "Expression": "person.FirstName = \"First Name\"",
+      "LocalParams": [],
+      "Actions": {
+        "OnSuccess": {
+          "Name": "EvaluateRule",
+          "Context": {
+            "workflowName": "inputWorkflow",
+            "ruleName": "RulePersonLastName"
+          }
+        }
+      }
+    },
+    {
+      "RuleName": "RulePersonLastName",
+      "Enabled": true,
+      "Operator": null,
+      "Expression": "person.LastName = \"Last Name\""
+    }
+  ]
+}
