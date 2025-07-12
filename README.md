@@ -1,3 +1,7 @@
+# [Alternate RulesEngine](https://github.com/asulwer/Rules)
+
+NOTE: I have been writing a rewrite that is considerably faster than the original RulesEngine (and this fork).  Very infant and not published on Nuget.
+
 # Rules Engine
 ![build](https://github.com/asulwer/RulesEngine/actions/workflows/dotnetcore-build.yml/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/asulwer/RulesEngine/badge.svg?branch=main)](https://coveralls.io/github/asulwer/RulesEngine?branch=main)
