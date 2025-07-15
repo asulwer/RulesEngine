@@ -15,6 +15,7 @@ namespace RulesEngine
         public CustomTypeProvider(Type[] types) : base(ParsingConfig.Default)
         {
             _types = new HashSet<Type>(types ?? new Type[] { }) {
+                typeof(Object),
                 typeof(ExpressionUtils)
             };
         }
