@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using RulesEngine.Models;
+using System.Collections.Generic;
 using System.Dynamic;
 using Xunit;
 
@@ -89,6 +90,22 @@ namespace RulesEngine.Tests
         {
             // Arrange
             var input = new { Name = "Test", Value = 10 };
+
+            // Act
+            var ruleParameter = new RuleParameter("data", input);
+
+            // Assert
+            Assert.Equal(input, ruleParameter.OriginalValue);
+        }
+
+        [Fact]
+        public void Constructor_SetsOriginalValueCorrectly_WithExpandoObject_WithItemKey()
+        {
+            // Arrange
+            var input = new ExpandoObject();
+            ((IDictionary<string, object>)input)["Item"] = "hello";
+            ((IDictionary<string, object>)input)["L"] = 1000;
+            ((IDictionary<string, object>)input)["W"] = 500;
 
             // Act
             var ruleParameter = new RuleParameter("data", input);
