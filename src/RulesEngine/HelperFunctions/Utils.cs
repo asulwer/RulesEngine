@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Text.Json;
 
 using RulesEngine.Models;
@@ -86,7 +87,7 @@ namespace RulesEngine.HelperFunctions
             }
             object obj = Activator.CreateInstance(type);
 
-            var typeProps = type.GetProperties().ToDictionary(c => c.Name);
+            var typeProps = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance).ToDictionary(c => c.Name);
 
             foreach (var expando in (IDictionary<string, object>)input)
             {
@@ -109,7 +110,7 @@ namespace RulesEngine.HelperFunctions
                         {
                             var child = CreateObject(internalType, temp[i]);
                             newList.Add(child);
-                        };
+                        }
                         val = newList;
                     }
                     else if (expando.Value is JsonElement expandoElement)

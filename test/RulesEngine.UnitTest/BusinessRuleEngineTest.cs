@@ -541,7 +541,7 @@ namespace RulesEngine.UnitTest
         [InlineData("rules11.json")]
         public async Task RulesEngineWithGlobalParam_RunsSuccessfully(string ruleFileName)
         {
-
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             var re = GetRulesEngine(ruleFileName, new ReSettings() { });
 
             var input1 = new[] {
