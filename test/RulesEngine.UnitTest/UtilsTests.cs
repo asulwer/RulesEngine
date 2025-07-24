@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Text.Json;
 using Xunit;
 
@@ -36,6 +38,22 @@ namespace RulesEngine.UnitTest
             object typedobj = Utils.GetTypedObject(obj);
             Assert.IsNotType<ExpandoObject>(typedobj);
             Assert.NotNull(typedobj.GetType().GetProperty("Test"));
+        }
+
+        [Fact]
+        public void GetTypedObject_Anonymous_dynamicObject()
+        {
+            dynamic obj = new ExpandoObject();
+            ((IDictionary<string, object>)obj)["Item"] = "hello";
+            ((IDictionary<string, object>)obj)["L"] = 1000;
+            ((IDictionary<string, object>)obj)["W"] = 500;
+
+            object typedobj = Utils.GetTypedObject(obj);
+            Assert.IsNotType<ExpandoObject>(typedobj);
+            Assert.NotNull(typedobj.GetType().GetProperty("L"));
+            Assert.NotNull(typedobj.GetType().GetProperty("W"));
+            Assert.NotNull(typedobj.GetType().GetProperty("Item", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance));
+            Assert.Throws<AmbiguousMatchException>(() => typedobj.GetType().GetProperty("Item"));
         }
 
         [Fact]
@@ -89,7 +107,6 @@ namespace RulesEngine.UnitTest
             object newObj = Utils.CreateObject(typeof(TestClass), obj);
             Assert.IsNotType<ExpandoObject>(newObj);
             Assert.NotNull(newObj.GetType().GetProperty("Test"));
-
         }
 
         [Fact]
@@ -182,7 +199,6 @@ namespace RulesEngine.UnitTest
 
             Assert.IsType<List<Dictionary<string, ImplicitObject>>>(result.things);
             Assert.Empty((List<Dictionary<string, ImplicitObject>>)result.things);
-            
         }
     }
 }
