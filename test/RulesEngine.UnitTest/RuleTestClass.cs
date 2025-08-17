@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 //  Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace RulesEngine.UnitTest
 {
     [ExcludeFromCodeCoverage]
     public class RuleTestClass
     {
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public string Country { get; set; }
-
-        [JsonProperty("loyaltyFactor")]
-        public int loyaltyFactor { get; set; }
+        [JsonPropertyName("loyaltyFactor")]
+        public int LoyaltyFactor { get; set; }
+        [JsonPropertyName("totalPurchasesToDate")]
         public int TotalPurchasesToDate { get; set; }
     }
 }

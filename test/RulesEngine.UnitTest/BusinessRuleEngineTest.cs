@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 
 using Moq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using RulesEngine.Actions;
 using RulesEngine.Exceptions;
 using RulesEngine.HelperFunctions;
 using RulesEngine.Interfaces;
 using RulesEngine.Models;
+using RulesEngine.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Metrics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -345,7 +345,7 @@ namespace RulesEngine.UnitTest
         public async Task RulesEngine_Execute_Rule_For_Nested_Rule_Params_Returns_Success(string ruleFileName,bool fastExpressionEnabled)
         {
             var inputs = GetInputs4();
-
+            
             var ruleParams = new List<RuleParameter>();
 
             for (var i = 0; i < inputs.Length; i++)
@@ -362,7 +362,7 @@ namespace RulesEngine.UnitTest
             }
 
             var fileData = File.ReadAllText(files[0]);
-            var bre = new RulesEngine(JsonConvert.DeserializeObject<Workflow[]>(fileData), new ReSettings {
+            var bre = new RulesEngine(JsonSerializer.Deserialize<Workflow[]>(fileData), new ReSettings {
                 UseFastExpressionCompiler = fastExpressionEnabled
             });
             var result = await bre.ExecuteAllRulesAsync("inputWorkflow", ruleParams?.ToArray());
@@ -1139,7 +1139,7 @@ namespace RulesEngine.UnitTest
 
         private RulesEngine CreateRulesEngine(Workflow workflow)
         {
-            var json = JsonConvert.SerializeObject(workflow);
+            var json = JsonSerializer.Serialize(workflow);
             return new RulesEngine(new string[] { json }, null);
         }
 
@@ -1152,7 +1152,7 @@ namespace RulesEngine.UnitTest
                 WorkflowsToInject = new List<string> { "inputWorkflow" }
             };
 
-            var injectWorkflowStr = JsonConvert.SerializeObject(injectWorkflow);
+            var injectWorkflowStr = JsonSerializer.Serialize(injectWorkflow);
             return new RulesEngine(new string[] { data, injectWorkflowStr }, reSettings);
         }
 
@@ -1165,28 +1165,37 @@ namespace RulesEngine.UnitTest
         private Workflow ParseAsWorkflow(string WorkflowsFileName)
         {
             string content = GetFileContent(WorkflowsFileName);
-            return JsonConvert.DeserializeObject<Workflow>(content);
+            return JsonSerializer.Deserialize<Workflow>(content);
         }
 
         private dynamic GetInput1()
         {
-            var converter = new ExpandoObjectConverter();
+            var options = new JsonSerializerOptions {
+                Converters = { new ObjectAsPrimitiveConverter(floatFormat: FloatFormat.Double, unknownNumberFormat: UnknownNumberFormat.Error, objectFormat: ObjectFormat.Expando) },
+                WriteIndented = true,
+            };
             var basicInfo = "{\"name\": \"Dishant\",\"email\": \"abc@xyz.com\",\"creditHistory\": \"good\",\"country\": \"canada\",\"loyaltyFactor\": 3,\"totalPurchasesToDate\": 10000}";
-            return JsonConvert.DeserializeObject<ExpandoObject>(basicInfo, converter);
+            return JsonSerializer.Deserialize<ExpandoObject>(basicInfo, options);
         }
 
         private dynamic GetInput2()
         {
-            var converter = new ExpandoObjectConverter();
+            var options = new JsonSerializerOptions {
+                Converters = { new ObjectAsPrimitiveConverter(floatFormat: FloatFormat.Double, unknownNumberFormat: UnknownNumberFormat.Error, objectFormat: ObjectFormat.Expando) },
+                WriteIndented = true,
+            };
             var orderInfo = "{\"totalOrders\": 5,\"recurringItems\": 2}";
-            return JsonConvert.DeserializeObject<ExpandoObject>(orderInfo, converter);
+            return JsonSerializer.Deserialize<ExpandoObject>(orderInfo, options);
         }
 
         private dynamic GetInput3()
         {
-            var converter = new ExpandoObjectConverter();
+            var options = new JsonSerializerOptions {
+                Converters = { new ObjectAsPrimitiveConverter(floatFormat: FloatFormat.Double, unknownNumberFormat: UnknownNumberFormat.Error, objectFormat: ObjectFormat.Expando) },
+                WriteIndented = true,
+            };
             var telemetryInfo = "{\"noOfVisitsPerMonth\": 10,\"percentageOfBuyingToVisit\": 15}";
-            return JsonConvert.DeserializeObject<ExpandoObject>(telemetryInfo, converter);
+            return JsonSerializer.Deserialize<ExpandoObject>(telemetryInfo, options);
         }
 
         /// <summary>
@@ -1203,11 +1212,11 @@ namespace RulesEngine.UnitTest
             var laborCategoriesInput = "[{\"country\": \"india\", \"loyaltyFactor\": 2, \"totalPurchasesToDate\": 20000}]";
             var currentLaborCategoryInput = "{\"CurrentLaborCategoryProp\":\"TestVal2\"}";
 
-            dynamic input1 = JsonConvert.DeserializeObject<List<RuleTestClass>>(laborCategoriesInput);
-            dynamic input2 = JsonConvert.DeserializeObject<ExpandoObject>(currentLaborCategoryInput);
-            dynamic input3 = JsonConvert.DeserializeObject<ExpandoObject>(telemetryInfo);
-            dynamic input4 = JsonConvert.DeserializeObject<ExpandoObject>(basicInfo);
-            dynamic input5 = JsonConvert.DeserializeObject<ExpandoObject>(orderInfo);
+            dynamic input1 = JsonSerializer.Deserialize<List<RuleTestClass>>(laborCategoriesInput);
+            dynamic input2 = JsonSerializer.Deserialize<ExpandoObject>(currentLaborCategoryInput);
+            dynamic input3 = JsonSerializer.Deserialize<ExpandoObject>(telemetryInfo);
+            dynamic input4 = JsonSerializer.Deserialize<ExpandoObject>(basicInfo);
+            dynamic input5 = JsonSerializer.Deserialize<ExpandoObject>(orderInfo);
 
             var inputs = new dynamic[]
                 {
