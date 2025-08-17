@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using RulesEngine.Models;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,11 +77,11 @@ namespace RulesEngine.UnitTest
         private async Task NestedRulesWithNestedActions_WorkflowParsedWithSystemTextJson_ReturnsCorrectResults()
         {
             var workflow = GetWorkflow();
-            var workflowStr = JsonConvert.SerializeObject(workflow);
+            var workflowStr = JsonSerializer.Serialize(workflow);
 
-            var serializationOptions = new System.Text.Json.JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
+            var serializationOptions = new JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
 
-            var workflowViaTextJson = System.Text.Json.JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
+            var workflowViaTextJson = JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
 
             var reSettings = new ReSettings { };
             var rulesEngine = new RulesEngine(workflowViaTextJson, reSettings: reSettings);
@@ -273,11 +273,11 @@ namespace RulesEngine.UnitTest
         private async Task NestedRulesWithNestedActions_WorkflowParsedWithSystemTextJson_ReturnsCorrectResults()
         {
             var workflow = GetWorkflow();
-            var workflowStr = JsonConvert.SerializeObject(workflow);
+            var workflowStr = JsonSerializer.Serialize(workflow);
 
-            var serializationOptions = new System.Text.Json.JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
+            var serializationOptions = new JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
 
-            var workflowViaTextJson = System.Text.Json.JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
+            var workflowViaTextJson = JsonSerializer.Deserialize<Workflow[]>(workflowStr, serializationOptions);
 
             var reSettings = new ReSettings { };
             var rulesEngine = new RulesEngine(workflowViaTextJson, reSettings: reSettings);

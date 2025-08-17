@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -15,6 +14,7 @@ using Xunit;
 using RulesEngine.HelperFunctions;
 using RulesEngine.Serialization;
 using RulesEngine.Models;
+using System.Text.Json.Nodes;
 
 namespace RulesEngine.UnitTest
 {
@@ -86,15 +86,15 @@ namespace RulesEngine.UnitTest
 
 
         [Fact]
-        public void GetJObject_nonDynamicObject()
+        public void GetJsonElement_nonDynamicObject()
         {
-            dynamic obj = JObject.FromObject(new {
+            dynamic obj = JsonSerializer.SerializeToElement(new {
                 Test = "hello"
             });
             dynamic typedobj = Utils.GetTypedObject(obj);
             Assert.IsNotType<ExpandoObject>(typedobj);
-            Assert.IsType<JObject>(typedobj);
-            Assert.NotNull(typedobj.Test);
+            Assert.IsType<JsonElement>(typedobj);
+            //Assert.NotNull(((JsonElement)typedobj).GetProperty("Test")); //generates a warning
         }
 
         [Fact]

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using RulesEngine.Models;
 using RulesEngine.UnitTest.ActionTests.MockClass;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Xunit;
@@ -34,7 +34,7 @@ namespace RulesEngine.UnitTest.ActionTests
         public async Task CustomAction_WithSystemTextJsobOnRuleMustHaveContextValues()
         {
             var workflow = GetWorkflow();
-            var workflowStr = JsonConvert.SerializeObject(workflow);
+            var workflowStr = JsonSerializer.Serialize(workflow);
             var serializationOptions = new System.Text.Json.JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
             var workflowViaTextJson = System.Text.Json.JsonSerializer.Deserialize<Workflow[]>(workflowStr,serializationOptions);
 
