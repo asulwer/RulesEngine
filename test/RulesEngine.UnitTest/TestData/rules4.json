@@ -7,27 +7,27 @@
         "SuccessEvent": "10",
         "ErrorMessage": "One or more adjust rules failed, with loyaltyFactor : $(model1.loyaltyFactor), country : $(model1.country), totalPurchasesToDate : $(model1.totalPurchasesToDate), model2 : $(model2)",
         "ErrorType": "Error",
-        "localParams": [
+        "LocalParams": [
           {
             "Name": "model1",
-            "Expression": "input1.FirstOrDefault(country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
+            "Expression": "input1.FirstOrDefault(rtc => rtc.Country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
           },
           {
             "Name": "model2",
-            "Expression": "model1.country == \"india\""
+            "Expression": "model1.Country == \"india\""
           }
         ],
         "RuleExpressionType": "LambdaExpression",
-        "Expression": "model1.country == \"india\" AND model1.loyaltyFactor <= 2 AND model1.totalPurchasesToDate >= 5000 AND model2"
+        "Expression": "model1.Country == \"india\" AND model1.LoyaltyFactor <= 2 AND model1.TotalPurchasesToDate >= 5000 AND model2"
       },
       {
         "RuleName": "GiveDiscount100",
         "SuccessEvent": "10",
         "ErrorType": "Error",
-        "localParams": [
+        "LocalParams": [
           {
             "Name": "model1",
-            "Expression": "input1.FirstOrDefault(country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
+            "Expression": "input1.FirstOrDefault(rtc => rtc.Country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
           },
           {
             "Name": "model2",
@@ -35,17 +35,17 @@
           }
         ],
         "RuleExpressionType": "LambdaExpression",
-        "Expression": "model1.country == \"india\" AND model1.loyaltyFactor < 0 AND model1.totalPurchasesToDate >= 5000 AND model2"
+        "Expression": "model1.Country == \"india\" AND model1.LoyaltyFactor < 0 AND model1.TotalPurchasesToDate >= 5000 AND model2"
       },
       {
         "RuleName": "GiveDiscount25",
         "SuccessEvent": "25",
         "ErrorMessage": "One or more adjust rules failed, country : $(input4.country), loyaltyFactor : $(input4.loyaltyFactor), totalPurchasesToDate : $(input4.totalPurchasesToDate), totalOrders : $(input5.totalOrders), noOfVisitsPerMonth : $(input30.noOfVisitsPerMonth), $(model2)",
         "ErrorType": "Error",
-        "localParams": [
+        "LocalParams": [
           {
             "Name": "model1",
-            "Expression": "input1.FirstOrDefault(country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
+            "Expression": "input1.FirstOrDefault(rtc => rtc.Country.Equals(\"india\", StringComparison.OrdinalIgnoreCase))"
           },
           {
             "Name": "model2",
@@ -53,7 +53,7 @@
           }
         ],
         "RuleExpressionType": "LambdaExpression",
-        "Expression": "input4.country == \"india\" AND input4.loyaltyFactor >= 2 AND input4.totalPurchasesToDate <= 10 AND input5.totalOrders > 2 AND input3.noOfVisitsPerMonth > 5"
+        "Expression": "input4.Country == \"india\" AND input4.LoyaltyFactor >= 2 AND input4.TotalPurchasesToDate <= 10 AND input5.totalOrders > 2 AND input3.noOfVisitsPerMonth > 5"
       },
       {
         "RuleName": "GiveDiscount30",
