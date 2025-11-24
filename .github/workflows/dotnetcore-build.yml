@@ -34,7 +34,7 @@ jobs:
       run: ./scripts/check-coverage.ps1 -reportPath coveragereport/Cobertura.xml -threshold 95
     
     - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@v2.3.6
+      uses: coverallsapp/github-action@v2.3.7
       if: ${{ github.event_name == 'push' }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
