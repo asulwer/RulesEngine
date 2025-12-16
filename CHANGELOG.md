@@ -2,12 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-### Changelog
-
-# CHANGELOG
-
-All notable changes to this project will be documented in this file.
-
 ## [6.0.13]
 
 ## New Feature
