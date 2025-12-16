@@ -143,7 +143,7 @@ namespace RulesEngine
 
         public async ValueTask<ActionRuleResult> ExecuteActionWorkflowAsync(string workflowName, string ruleName, RuleParameter[] ruleParameters, CancellationToken cancellationToken)
         {
-            var compiledRule = CompileRule(workflowName, ruleName, ruleParameters);
+            var compiledRule = GetCompiledRule(workflowName, ruleName, ruleParameters);
             var resultTree = compiledRule(ruleParameters);
             return await ExecuteActionForRuleResult(resultTree, true, cancellationToken);
         }
@@ -340,6 +340,28 @@ namespace RulesEngine
             {
                 return false;
             }
+        }
+
+        private RuleFunc<RuleResultTree> GetCompiledRule(string workflowName, string ruleName, RuleParameter[] ruleParameters)
+        {
+            // Ensure the workflow is registered and rules are compiled
+            if (!RegisterRule(workflowName, ruleParameters))
+            {
+                throw new ArgumentException($"Rule config file is not present for the {workflowName} workflow");
+            }
+
+            // Get the compiled rule from cache
+            var compiledRulesCacheKey = GetCompiledRulesKey(workflowName, ruleParameters);
+            var compiledRules = _rulesCache.GetCompiledRules(compiledRulesCacheKey);
+
+            if (compiledRules?.TryGetValue(ruleName, out var compiledRule) == true)
+            {
+                return compiledRule;
+            }
+
+            // Fallback to individual compilation if not found in cache
+            // This should rarely happen, but provides safety
+            return CompileRule(workflowName, ruleName, ruleParameters);
         }
 
         private RuleFunc<RuleResultTree> CompileRule(string workflowName, string ruleName, RuleParameter[] ruleParameters)

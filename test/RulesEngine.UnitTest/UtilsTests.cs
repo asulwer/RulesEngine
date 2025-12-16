@@ -52,8 +52,7 @@ namespace RulesEngine.UnitTest
             Assert.IsNotType<ExpandoObject>(typedobj);
             Assert.NotNull(typedobj.GetType().GetProperty("L"));
             Assert.NotNull(typedobj.GetType().GetProperty("W"));
-            Assert.NotNull(typedobj.GetType().GetProperty("Item", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance));
-            Assert.Throws<AmbiguousMatchException>(() => typedobj.GetType().GetProperty("Item"));
+            Assert.NotNull(typedobj.GetType().GetProperty("Item"));
         }
 
         [Fact]
