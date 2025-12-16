@@ -8,6 +8,56 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.13]
+
+## New Feature
+* use the result of the previous rule in the next rules expression by @asulwer in https://github.com/asulwer/RulesEngine/pull/136
+
+## What's Changed
+* Bump Microsoft.EntityFrameworkCore and 3 others by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/129
+* solves issue https://github.com/asulwer/RulesEngine/issues/130 and all past topics on it by @asulwer in https://github.com/asulwer/RulesEngine/pull/131
+* Fix AmbiguousMatchException  by @SJ-narbutas in https://github.com/asulwer/RulesEngine/pull/132
+* Bump dotnet-reportgenerator-globaltool and xunit.runner.visualstudio by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/134
+* Bump dotnet-reportgenerator-globaltool and System.Linq.Dynamic.Core by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/135
+
+## New Contributors
+* @SJ-narbutas made their first contribution in https://github.com/asulwer/RulesEngine/pull/132
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.12...v6.0.13
+
+## [6.0.12]
+
+## What's Changed
+* Bump xunit.runner.visualstudio from 3.1.0 to 3.1.1 by @dependabot in https://github.com/asulwer/RulesEngine/pull/125
+* Bump BenchmarkDotNet and 5 others by @dependabot in https://github.com/asulwer/RulesEngine/pull/126
+* Bump BenchmarkDotNet from 0.15.1 to 0.15.2 by @dependabot in https://github.com/asulwer/RulesEngine/pull/127
+* Fixed [Issue 128](https://github.com/asulwer/RulesEngine/issues/128)
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.11...v6.0.12
+
+## [6.0.11]
+
+## What's Changed
+* Update xunit.runner.visualstudio to 3.1.0 by @dependabot in https://github.com/asulwer/RulesEngine/pull/122
+* Update System.Linq.Dynamic.Core to 1.6.3 by @dependabot in https://github.com/asulwer/RulesEngine/pull/123
+* updated nuget packages by @asulwer in https://github.com/asulwer/RulesEngine/pull/124
+
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.10...v6.0.11
+
+## [6.0.10]
+
+## What's Changed
+* Bump dotnet-reportgenerator-globaltool from 5.4.4 to 5.4.5 by @dependabot in #114
+* Bump FastExpressionCompiler from 5.0.2 to 5.0.3 by @dependabot in #115
+* Bump FastExpressionCompiler from 5.0.3 to 5.1.1 by @dependabot in #117
+* Bump Microsoft.EntityFrameworkCore from 9.0.3 to 9.0.4 by @dependabot in #118
+* Bump System.Text.Json from 9.0.3 to 9.0.4 by @dependabot in #119
+* Fix duplication of inputs during EvaluateRule execution by @RenanCarlosPereira in #120
+* Bump System.Linq.Dynamic.Core from 1.6.0.2 to 1.6.2 by @dependabot in #121
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.9...v6.0.10
+
 ## [6.0.9]
 
 ## What's Changed
