@@ -48,7 +48,7 @@ namespace RulesEngine.UnitTest.RuleExpressionParserTests
         [Fact]
         public void CachingLiteralsDictionary()
         {
-            var board = new { NumberOfMembers = default(decimal?) };
+            var board = new { NumberOfMembers = default(double?) };
 
             var parameters = new RuleParameter[] {
                 RuleParameter.Create("Board", board) 
