@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.14]
+
+## What's Changed
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/137
+* Bump dotnet-reportgenerator-globaltool from 5.4.11 to 5.4.12 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/138
+* Bump actions/setup-dotnet from 4 to 5 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/139
+* Bump dotnet-reportgenerator-globaltool from 5.4.12 to 5.4.13 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/140
+* Bump BenchmarkDotNet from 0.15.2 to 0.15.3 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/141
+* Bump BenchmarkDotNet from 0.15.3 to 0.15.4 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/142
+* Bump dotnet-reportgenerator-globaltool from 5.4.13 to 5.4.16 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/143
+* Bump github/codeql-action from 3 to 4 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/144
+* Bump dotnet-reportgenerator-globaltool from 5.4.16 to 5.4.17 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/145
+* Bump Microsoft.EntityFrameworkCore from 9.0.8 to 9.0.10 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/146
+* Bump actions/upload-artifact from 4 to 5 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/147
+* Bump dotnet-reportgenerator-globaltool from 5.4.17 to 5.4.18 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/148
+* Bump BenchmarkDotNet from 0.15.4 to 0.15.5 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/149
+* Bump BenchmarkDotNet from 0.15.5 to 0.15.6 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/150
+* Bump coverallsapp/github-action from 2.3.6 to 2.3.7 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/151
+* Bump dotnet-reportgenerator-globaltool from 5.4.18 to 5.5.0 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/152
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/153
+* Bump BenchmarkDotNet from 0.15.6 to 0.15.8 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/154
+* Bump dotnet-reportgenerator-globaltool from 5.5.0 to 5.5.1 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/155
+* Bump actions/upload-artifact from 5 to 6 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/156
+* Bump FluentValidation from 11.11.0 to 11.12.0 by @dependabot[bot] in https://github.com/asulwer/RulesEngine/pull/157
+* Rule chaining in RulesEngine suffered from exponential performance degradation as reported in #471 #706 by @asulwer in https://github.com/asulwer/RulesEngine/pull/158
+
+
+**Full Changelog**: https://github.com/asulwer/RulesEngine/compare/v6.0.13...v6.0.14
+
 ## [6.0.13]
 
 ## New Feature
